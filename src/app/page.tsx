@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Terminal,
   ExternalLink,
@@ -21,6 +21,13 @@ import {
   Globe,
   Menu,
   X,
+  Sun,
+  Moon,
+  Heart,
+  Wrench,
+  BookOpen,
+  Calendar,
+  ChevronRight,
 } from "lucide-react";
 
 // Base path helper for GitHub Pages repository deployment (/portafolio)
@@ -39,8 +46,36 @@ function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
 }
 
 export default function Home() {
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [copied, setCopied] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Initialize theme from localStorage or default to dark
+  useEffect(() => {
+    const saved = localStorage.getItem("theme") as "dark" | "light" | null;
+    if (saved) {
+      setTheme(saved);
+      if (saved === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    } else {
+      document.documentElement.classList.add("dark");
+      setTheme("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+    if (next === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("alejo.quiroz2534@gmail.com");
@@ -51,258 +86,428 @@ export default function Home() {
   const closeMenu = () => setMobileMenuOpen(false);
 
   return (
-    <div className="min-h-screen bg-[#08090c] text-[#e1e4ea] selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
-      {/* Ambient glowing backdrop lights */}
+    <div className="min-h-screen bg-[#f8fafc] text-neutral-900 dark:bg-[#08090c] dark:text-[#e1e4ea] selection:bg-blue-600 selection:text-white transition-colors duration-250 relative overflow-x-hidden">
+      {/* Ambient background glows */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-gradient-to-b from-blue-600/12 via-purple-600/6 to-transparent blur-3xl opacity-80" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-gradient-to-b from-blue-500/10 dark:from-blue-600/12 via-purple-500/5 dark:via-purple-600/6 to-transparent blur-3xl opacity-80" />
         <div className="absolute top-[35%] right-[-10%] w-[500px] h-[500px] bg-blue-500/5 blur-3xl rounded-full" />
         <div className="absolute bottom-[20%] left-[-10%] w-[500px] h-[500px] bg-indigo-500/5 blur-3xl rounded-full" />
       </div>
 
-      {/* Navigation Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#08090c]/85 border-b border-white/5">
+      {/* TOP NAVIGATION BAR */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-[#08090c]/85 border-b border-neutral-200/80 dark:border-white/5 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
+          {/* Brand with mini photo */}
           <a href="#" className="flex items-center gap-2.5 group">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 group-hover:scale-125 transition-transform" />
-            <span className="font-mono text-sm tracking-wider font-semibold text-white group-hover:text-blue-400 transition-colors">
-              MERC4X<span className="text-blue-500">.DEV</span>
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-neutral-200 dark:border-white/10 shrink-0">
+              <img
+                src={`${basePath}/images/avatar.png`}
+                alt="Alejandro Mercado"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className="font-semibold text-sm tracking-tight text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              Alejandro Mercado
             </span>
           </a>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-400">
-            <a href="#sobre-mi" className="hover:text-white transition-colors">
-              Sobre Mí
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+            <a href="#sobre-mi" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
+              Sobre mí
             </a>
-            <a href="#proyectos" className="hover:text-white transition-colors">
+            <a href="#proyectos" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
               Proyectos
             </a>
-            <a href="#habilidades" className="hover:text-white transition-colors">
-              Habilidades
+            <a href="#trayectoria" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
+              Trayectoria
             </a>
-            <a href="#contacto" className="hover:text-white transition-colors">
-              Contacto
+            <a href="#habilidades" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
+              Habilidades
             </a>
           </nav>
 
-          {/* Desktop & Mobile Actions */}
+          {/* Right Header Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-neutral-300">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span>Disponible para trabajar</span>
-            </div>
+            {/* Dark / Light Mode Switcher */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Cambiar tema"
+              className="p-2 rounded-lg bg-neutral-100 dark:bg-white/5 hover:bg-neutral-200 dark:hover:bg-white/10 text-neutral-700 dark:text-neutral-300 transition-colors border border-neutral-200 dark:border-white/5"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-neutral-700" />}
+            </button>
 
+            {/* GitHub Profile Button */}
             <a
               href="https://github.com/Merc4x"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-colors border border-white/5"
+              className="p-2 rounded-lg bg-neutral-100 dark:bg-white/5 hover:bg-neutral-200 dark:hover:bg-white/10 text-neutral-700 dark:text-neutral-300 transition-colors border border-neutral-200 dark:border-white/5"
             >
               <GithubIcon className="w-4 h-4" />
             </a>
 
+            {/* Primary Action Button (Blue pill) */}
             <a
-              href="https://wa.me/573116425806"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors shadow-lg shadow-blue-600/20"
+              href="#contacto"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95"
             >
-              <Phone className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline sm:inline">WhatsApp</span>
+              <span>Contáctame</span>
             </a>
 
-            {/* Mobile Hamburger Button */}
+            {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-colors border border-white/5"
+              className="md:hidden p-2 rounded-lg bg-neutral-100 dark:bg-white/5 hover:bg-neutral-200 dark:hover:bg-white/10 text-neutral-700 dark:text-neutral-300 transition-colors border border-neutral-200 dark:border-white/5"
               aria-label="Abrir menú"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/10 bg-[#0c0e14]/95 backdrop-blur-2xl px-5 py-6 space-y-4 animate-in slide-in-from-top-2">
-            <div className="flex items-center gap-2 pb-2 text-xs text-emerald-400 font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Disponible para nuevos proyectos</span>
+          <div className="md:hidden border-t border-neutral-200 dark:border-white/10 bg-white/95 dark:bg-[#0c0e14]/95 backdrop-blur-2xl px-5 py-6 space-y-4 shadow-xl">
+            <div className="flex items-center gap-2 pb-1 text-xs text-emerald-600 dark:text-emerald-400 font-mono">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Disponible para trabajar</span>
             </div>
 
-            <nav className="flex flex-col space-y-3 font-medium text-base text-neutral-200">
+            <nav className="flex flex-col space-y-2 font-medium text-base text-neutral-800 dark:text-neutral-200">
               <a
                 href="#sobre-mi"
                 onClick={closeMenu}
-                className="py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                className="py-2 px-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
               >
-                Sobre Mí
+                Sobre mí
               </a>
               <a
                 href="#proyectos"
                 onClick={closeMenu}
-                className="py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                className="py-2 px-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
               >
-                Proyectos Destacados
+                Proyectos
+              </a>
+              <a
+                href="#trayectoria"
+                onClick={closeMenu}
+                className="py-2 px-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
+              >
+                Trayectoria &amp; Educación
               </a>
               <a
                 href="#habilidades"
                 onClick={closeMenu}
-                className="py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                className="py-2 px-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
               >
-                Habilidades &amp; Stack
+                Habilidades
               </a>
               <a
                 href="#contacto"
                 onClick={closeMenu}
-                className="py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                className="py-2 px-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
               >
-                Contacto Directo
+                Contacto
               </a>
             </nav>
 
-            <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
+            <div className="pt-3 border-t border-neutral-200 dark:border-white/10 flex flex-col gap-2">
               <a
                 href="https://wa.me/573116425806"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={closeMenu}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm shadow-md"
               >
                 <Phone className="w-4 h-4" />
-                <span>Contactar por WhatsApp</span>
-              </a>
-
-              <a
-                href="mailto:alejo.quiroz2534@gmail.com"
-                onClick={closeMenu}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 border border-white/10 text-neutral-200 font-medium text-sm"
-              >
-                <Mail className="w-4 h-4" />
-                <span>alejo.quiroz2534@gmail.com</span>
+                <span>Escríbeme por WhatsApp</span>
               </a>
             </div>
           </div>
         )}
       </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-8 sm:pt-14 md:pt-20 pb-20 sm:pb-28">
-        {/* HERO SECTION */}
-        <section className="grid lg:grid-cols-12 gap-8 sm:gap-12 items-center pb-14 sm:pb-20 border-b border-white/5">
-          {/* Left Column: Headline and Bio */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-            {/* Academic badge (wrapped gracefully on mobile) */}
-            <div className="inline-flex flex-wrap items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400 text-[11px] sm:text-xs font-mono tracking-wide leading-tight max-w-full">
-              <Sparkles className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-              <span>4.° SEMESTRE &bull; ING. DE SOFTWARE EN TdeA &bull; FULL STACK</span>
-            </div>
+      {/* MAIN CONTAINER */}
+      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+        {/* HERO SECTION (Centered Avatar Layout inspired by Duan Gómez) */}
+        <section className="text-center space-y-6 sm:space-y-7 pb-16 border-b border-neutral-200/80 dark:border-white/5">
+          {/* Centered Avatar Frame with status badge */}
+          <div className="flex flex-col items-center">
+            <div className="relative group">
+              <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl overflow-hidden bg-neutral-200 dark:bg-neutral-800 border-2 border-neutral-200 dark:border-white/15 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src={`${basePath}/images/avatar.png`}
+                  alt="Alejandro Mercado"
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15] sm:leading-[1.1] break-words">
-              Engineering with <br />
-              <span className="bg-gradient-to-r from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent">
-                precision, flow &amp; purpose.
-              </span>
-            </h1>
-
-            <p className="text-sm sm:text-lg text-neutral-300 leading-relaxed max-w-2xl">
-              Hola, soy <strong className="text-white font-semibold">Alejandro Mercado</strong>. Estudiante de <span className="text-white font-semibold">4.° semestre de Ingeniería de Software en el Tecnológico de Antioquia (TdeA)</span> y desarrollador Full Stack. Construyo productos digitales escalables combinando bases sólidas de ingeniería con la velocidad del <span className="text-blue-400 font-mono">vibe coding</span> y arquitectura limpia.
-            </p>
-
-            {/* Quick Metadata Chips */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 text-xs text-neutral-400">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-white/5 border border-white/5 text-[11px] sm:text-xs">
-                <MapPin className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                Medellín, Colombia
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-white/5 border border-white/5 text-neutral-300 text-[11px] sm:text-xs">
-                <GraduationCap className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                Ing. Software (4.° Semestre) &bull; TdeA
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-white/5 border border-white/5 text-[11px] sm:text-xs">
-                <Terminal className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                Vibe Coding &amp; Flow
-              </span>
-            </div>
-
-            {/* CTA Buttons (Mobile full width, Desktop inline) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3">
-              <a
-                href="#proyectos"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-black font-semibold text-sm hover:bg-neutral-200 transition-all shadow-lg shadow-white/10 active:scale-95 text-center"
-              >
-                <span>Ver Proyectos</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-
-              <a
-                href="https://wa.me/573116425806"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium text-sm transition-all border border-white/10 active:scale-95 text-center"
-              >
-                <Phone className="w-4 h-4 text-emerald-400" />
-                <span>+57 311 642 5806</span>
-              </a>
-
-              <button
-                onClick={handleCopyEmail}
-                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white font-medium text-sm transition-all border border-white/10 active:scale-95 text-center"
-                title="Copiar correo"
-              >
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-neutral-400" />}
-                <span>{copied ? "Copiado al portapapeles" : "Copiar Correo"}</span>
-              </button>
+              {/* Status pill under avatar */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#0f1117] border border-neutral-200 dark:border-white/15 text-[11px] font-medium text-neutral-800 dark:text-neutral-200 shadow-md">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Disponible para trabajar</span>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: APARTADO DE LA FOTO DE PERFIL */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end pt-4 lg:pt-0">
-            <div className="relative group w-full max-w-[290px] sm:max-w-sm mx-auto">
-              {/* Outer decorative aura ring */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-blue-600/30 via-purple-600/20 to-cyan-500/30 blur-xl opacity-70 group-hover:opacity-100 transition-opacity" />
+          {/* Subtitle tag */}
+          <div className="pt-2">
+            <p className="text-xs sm:text-sm font-medium text-blue-600 dark:text-blue-400 font-mono tracking-wide">
+              Estudiante de Ingeniería de Software &bull; TdeA &bull; 4.° semestre
+            </p>
+          </div>
 
-              {/* Card Container */}
-              <div className="relative rounded-2xl bg-[#0f1117] border border-white/10 overflow-hidden shadow-2xl p-3.5 sm:p-4">
-                {/* Image Frame */}
-                <div className="relative aspect-square rounded-xl overflow-hidden bg-neutral-900 border border-white/5">
-                  <img
-                    src={`${basePath}/images/avatar.png`}
-                    alt="Foto de Alejandro Mercado"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+          {/* Main Giant Headline with Gradient */}
+          <div className="space-y-1">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-[1.1]">
+              Hola, soy Alejandro.
+            </h1>
+            <p className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent leading-[1.15]">
+              Construyo software que se siente bien hecho.
+            </p>
+          </div>
 
-                  {/* Top Badge */}
-                  <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 px-2 sm:px-2.5 py-1 rounded-md bg-[#08090c]/85 backdrop-blur-md border border-white/10 text-[10px] sm:text-[11px] font-mono text-neutral-300 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>Alejandro Mercado</span>
-                  </div>
+          {/* Bio text */}
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-2xl mx-auto">
+            Desarrollador full-stack en Medellín, Colombia. Creo aplicaciones web completas, servicios escalables y herramientas de alto impacto con <span className="text-neutral-900 dark:text-white font-medium">React, Next.js, Python, Flask</span> y <span className="text-neutral-900 dark:text-white font-medium">Spring Boot</span>.
+          </p>
 
-                  {/* Replace Photo Hint Pill */}
-                  <div className="absolute bottom-2.5 inset-x-2.5 sm:bottom-3 sm:inset-x-3 text-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-[#08090c]/90 backdrop-blur-md border border-white/10 text-[10px] sm:text-[11px] text-neutral-400">
-                    Tu foto en <code className="text-blue-400 font-mono">public/images/avatar.png</code>
-                  </div>
+          {/* Hero Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 max-w-md mx-auto sm:max-w-none">
+            <a
+              href="#proyectos"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
+            >
+              <span>Ver proyectos</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+
+            <a
+              href="https://github.com/Merc4x"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-neutral-800 dark:text-white font-semibold text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm"
+            >
+              <GithubIcon className="w-4 h-4" />
+              <span>GitHub</span>
+            </a>
+
+            <a
+              href="https://wa.me/573116425806"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-emerald-600 dark:text-emerald-400 font-semibold text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm"
+            >
+              <Phone className="w-4 h-4" />
+              <span>WhatsApp</span>
+            </a>
+          </div>
+        </section>
+
+        {/* STATS COUNTER ROW (Inspired by Duan Gómez Image 2) */}
+        <section className="py-12 border-b border-neutral-200/80 dark:border-white/5">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="space-y-1">
+              <div className="text-3xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white font-mono tracking-tight">
+                4.°
+              </div>
+              <div className="text-[11px] sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                semestre en TdeA
+              </div>
+            </div>
+
+            <div className="space-y-1 border-x border-neutral-200 dark:border-white/10">
+              <div className="text-3xl sm:text-5xl font-extrabold text-blue-600 dark:text-blue-400 font-mono tracking-tight">
+                2+
+              </div>
+              <div className="text-[11px] sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                proyectos publicados
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <div className="text-3xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white font-mono tracking-tight">
+                100%
+              </div>
+              <div className="text-[11px] sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                código limpio &amp; tipado
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURE HIGHLIGHT BANNER (Inspired by Duan Gómez Image 2) */}
+        <section className="py-12 border-b border-neutral-200/80 dark:border-white/5">
+          <div className="relative rounded-3xl bg-gradient-to-r from-blue-900/20 via-indigo-900/20 to-purple-900/20 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-purple-950/40 border border-blue-500/20 dark:border-blue-500/20 p-6 sm:p-10 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <div className="text-xs font-mono font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                Mi enfoque técnico
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+                Arquitectura Full Stack &amp; Vibe Coding.
+              </h2>
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                Desarrollo de software a medida combinando ingeniería formal con metodologías ágiles de alta cadencia. Diseño y construyo productos completos —desde la interfaz hasta el despliegue en la nube— con obsesión por el detalle y el rendimiento.
+              </p>
+            </div>
+
+            <div className="shrink-0">
+              <a
+                href="#proyectos"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-white text-neutral-900 font-semibold text-sm hover:bg-neutral-100 transition-all shadow-md active:scale-95"
+              >
+                <span>Conocer proyectos</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* "SOBRE MÍ" SECTION (Inspired by Duan Gómez Image 3) */}
+        <section id="sobre-mi" className="py-16 border-b border-neutral-200/80 dark:border-white/5">
+          <div className="grid md:grid-cols-12 gap-8 items-start">
+            {/* Left Column: Bold statement */}
+            <div className="md:col-span-5 space-y-3">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider font-semibold">
+                Sobre mí
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-tight">
+                Aprendo rápido, entrego con cuidado.
+              </h2>
+            </div>
+
+            {/* Right Column: Paragraph and Tag Pills */}
+            <div className="md:col-span-7 space-y-6">
+              <p className="text-neutral-600 dark:text-neutral-300 text-base leading-relaxed">
+                Desarrollador de software con enfoque universitario y autodidacta, actualmente cursando el <strong className="text-neutral-900 dark:text-white">4.° semestre de Ingeniería de Software en el Tecnológico de Antioquia (TdeA)</strong>. Construyo aplicaciones de punta a punta —del diseño de la interfaz a la API y la base de datos. Me caracterizo por mi responsabilidad, código modular y capacidad de adaptación.
+              </p>
+
+              <p className="text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed">
+                Busco seguir creciendo en equipos de desarrollo donde pueda aportar mis habilidades técnicas, colaborar con pasión y diseñar soluciones escalables.
+              </p>
+
+              {/* Tag Pills (Image 3 style) */}
+              <div className="flex flex-wrap gap-2.5 pt-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                  <MapPin className="w-3.5 h-3.5 text-neutral-500" />
+                  Medellín, Colombia
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                  <GraduationCap className="w-3.5 h-3.5 text-blue-500" />
+                  Ingeniería de Software &bull; TdeA
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                  <Globe className="w-3.5 h-3.5 text-neutral-500" />
+                  Español nativo &bull; Inglés técnico
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* "TRAYECTORIA: EXPERIENCIA Y FORMACIÓN" (Inspired by Duan Gómez Image 4) */}
+        <section id="trayectoria" className="py-16 border-b border-neutral-200/80 dark:border-white/5">
+          <div className="space-y-2 mb-10">
+            <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider font-semibold">
+              Trayectoria
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+              Experiencia y formación.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-12 gap-8 items-start">
+            {/* Left Column: Timeline of Projects / Software Development */}
+            <div className="md:col-span-7 space-y-6">
+              {/* Item 1: LiveCopilot */}
+              <div className="p-6 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+                    LiveCopilot &bull; Asistente IA de Escritorio
+                  </h3>
+                  <span className="text-xs font-mono text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 rounded-md">
+                    Python / AI
+                  </span>
+                </div>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  Desarrollador Principal &bull; Código Abierto
+                </p>
+                <ul className="space-y-2 text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 list-disc list-inside leading-relaxed">
+                  <li>Captura de audio nativo loopback en Windows con WASAPI y segmentación inteligente por voz con Silero VAD.</li>
+                  <li>Transcripción en tiempo real con Groq Whisper API y generación de sugerencias inteligentes asistidas con IA.</li>
+                  <li>Interfaz HUD flotante con aceleración por hardware renderizada a 60 FPS con PyQt6.</li>
+                </ul>
+              </div>
+
+              {/* Item 2: Soluciones en Salud Laboral */}
+              <div className="p-6 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+                    Soluciones en Salud Laboral &bull; Web SaaS
+                  </h3>
+                  <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-md">
+                    En Producción
+                  </span>
+                </div>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  Desarrollador Full Stack &bull; Plataforma Web
+                </p>
+                <ul className="space-y-2 text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 list-disc list-inside leading-relaxed">
+                  <li>Plataforma web integral para la gestión y divulgación de Seguridad y Salud en el Trabajo (SG-SST).</li>
+                  <li>Desarrollo de servicios backend con Python, Flask, plantillas dinámicas y base de datos relacional.</li>
+                  <li>Despliegue y configuración en la nube en Render con integración continua.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Right Column: Educación Card (Image 4 right card) */}
+            <div className="md:col-span-5">
+              <div className="p-6 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-6">
+                <div className="flex items-center gap-2 text-neutral-900 dark:text-white font-bold text-base">
+                  <GraduationCap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <span>Educación</span>
                 </div>
 
-                {/* Profile Card Metadata */}
-                <div className="pt-3.5 sm:pt-4 px-1 space-y-1.5 sm:space-y-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <div>
-                      <h3 className="font-semibold text-white text-sm sm:text-base">Alejandro Mercado</h3>
-                      <p className="text-[11px] sm:text-xs text-blue-400 font-mono">4.° Semestre Ing. Software &bull; TdeA</p>
-                    </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
-                      Medellín, CO
-                    </span>
-                  </div>
+                {/* Degree 1 */}
+                <div className="space-y-1">
+                  <h4 className="font-semibold text-neutral-900 dark:text-white text-sm">
+                    Ingeniería de Software
+                  </h4>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Tecnológico de Antioquia (TdeA)
+                  </p>
+                  <p className="text-xs font-mono text-blue-600 dark:text-blue-400 font-medium">
+                    En curso &bull; 4.° semestre
+                  </p>
+                </div>
 
-                  <p className="text-xs text-neutral-400 leading-relaxed pt-0.5">
-                    Estudiante en el Tecnológico de Antioquia. Desarrollando soluciones con interfaces modernas, microservicios y copilotos con IA.
+                <div className="border-t border-neutral-200 dark:border-white/10" />
+
+                {/* Training 2 */}
+                <div className="space-y-1">
+                  <h4 className="font-semibold text-neutral-900 dark:text-white text-sm">
+                    Desarrollo Full Stack &amp; Vibe Coding
+                  </h4>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Especialización práctica autodidacta
+                  </p>
+                  <p className="text-xs font-mono text-neutral-500 dark:text-neutral-400">
+                    React &bull; Next.js &bull; Python &bull; Spring Boot
+                  </p>
+                </div>
+
+                <div className="border-t border-neutral-200 dark:border-white/10" />
+
+                {/* Degree 3 */}
+                <div className="space-y-1">
+                  <h4 className="font-semibold text-neutral-900 dark:text-white text-sm">
+                    Bachiller Académico
+                  </h4>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    Graduado
                   </p>
                 </div>
               </div>
@@ -310,60 +515,14 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION: SOBRE MÍ & BENTO VALUES */}
-        <section id="sobre-mi" className="py-14 sm:py-20 border-b border-white/5">
-          <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
-            <div className="text-xs font-mono text-blue-400 tracking-wider">01 / PERFIL Y ENFOQUE</div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
-              Ingeniería, arquitectura y código limpio.
-            </h2>
-            <p className="text-neutral-400 max-w-2xl text-sm sm:text-base leading-relaxed">
-              Combino el rigor técnico de la ingeniería con la velocidad de ejecución y adopción de IA para crear productos resistentes y escalables.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* Bento Card 1 */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-[#0f1117]/80 border border-white/5 hover:border-white/15 transition-all">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-4 sm:mb-5">
-                <GraduationCap className="w-5 h-5" />
+        {/* VITRINA DE PROYECTOS DESTACADOS CON MOCKUPS */}
+        <section id="proyectos" className="py-16 border-b border-neutral-200/80 dark:border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-3">
+            <div className="space-y-2">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider font-semibold">
+                Proyectos
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Ingeniería de Software (TdeA)</h3>
-              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                Actualmente cursando el 4.° semestre en el Tecnológico de Antioquia (TdeA). Formación universitaria enfocada en estructuras de datos, algoritmia, patrones de diseño de software y calidad de código.
-              </p>
-            </div>
-
-            {/* Bento Card 2 */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-[#0f1117]/80 border border-white/5 hover:border-white/15 transition-all">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 sm:mb-5">
-                <Layers className="w-5 h-5" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Arquitectura Full Stack</h3>
-              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                Construcción de interfaces reactivas con Next.js y React conectadas a backends robustos y seguros en Python, Java (Spring Boot) o Node.js.
-              </p>
-            </div>
-
-            {/* Bento Card 3 */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-[#0f1117]/80 border border-white/5 hover:border-white/15 transition-all">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 sm:mb-5">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white mb-2">Vibe Coding &amp; Flow</h3>
-              <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                Metodología acelerada potenciada por herramientas avanzadas de IA. Reducción drástica del ciclo entre la idea, la validación y el despliegue a producción.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION: PROYECTOS DESTACADOS */}
-        <section id="proyectos" className="py-14 sm:py-20 border-b border-white/5">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-3 sm:gap-4">
-            <div className="space-y-3 sm:space-y-4">
-              <div className="text-xs font-mono text-blue-400 tracking-wider">02 / CASOS DE ESTUDIO</div>
-              <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
                 Software en producción y código abierto.
               </h2>
             </div>
@@ -371,58 +530,58 @@ export default function Home() {
               href="https://github.com/Merc4x?tab=repositories"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-neutral-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors"
             >
               <span>Ver todos en GitHub</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Project 1: LiveCopilot */}
-            <div className="group rounded-2xl bg-[#0f1117] border border-white/10 hover:border-white/20 transition-all overflow-hidden flex flex-col">
-              <div className="relative aspect-[16/9] overflow-hidden bg-neutral-900 border-b border-white/5">
+            <div className="group rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 hover:border-neutral-300 dark:hover:border-white/20 transition-all overflow-hidden flex flex-col shadow-sm">
+              <div className="relative aspect-[16/9] overflow-hidden bg-neutral-100 dark:bg-neutral-900 border-b border-neutral-200 dark:border-white/5">
                 <img
                   src={`${basePath}/images/livecopilot.png`}
                   alt="LiveCopilot Desktop App"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 px-2 sm:px-2.5 py-1 rounded-md bg-[#08090c]/85 backdrop-blur-md border border-white/10 text-[11px] sm:text-xs font-mono text-blue-400">
+                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 dark:bg-[#08090c]/85 backdrop-blur-md border border-neutral-200 dark:border-white/10 text-xs font-mono text-blue-600 dark:text-blue-400">
                   Desktop AI Copilot
                 </div>
               </div>
 
-              <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     LiveCopilot
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2 leading-relaxed">
                     Copiloto de escritorio para Windows con captura de loopback de audio WASAPI, detección por voz con Silero VAD y transcripción en tiempo real vía Groq Whisper, renderizado en un HUD flotante a 60 FPS.
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     Python
                   </span>
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     PyQt6
                   </span>
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     Groq Whisper
                   </span>
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     Silero VAD
                   </span>
                 </div>
 
-                <div className="pt-3 sm:pt-4 border-t border-white/5 flex items-center justify-between">
+                <div className="pt-4 border-t border-neutral-200 dark:border-white/5 flex items-center justify-between">
                   <a
                     href="https://github.com/Merc4x/LiveCopilot"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white hover:text-blue-400 transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   >
                     <GithubIcon className="w-4 h-4" />
                     <span>Ver Repositorio &rarr;</span>
@@ -432,49 +591,49 @@ export default function Home() {
             </div>
 
             {/* Project 2: Soluciones en Salud Laboral */}
-            <div className="group rounded-2xl bg-[#0f1117] border border-white/10 hover:border-white/20 transition-all overflow-hidden flex flex-col">
-              <div className="relative aspect-[16/9] overflow-hidden bg-neutral-900 border-b border-white/5">
+            <div className="group rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 hover:border-neutral-300 dark:hover:border-white/20 transition-all overflow-hidden flex flex-col shadow-sm">
+              <div className="relative aspect-[16/9] overflow-hidden bg-neutral-100 dark:bg-neutral-900 border-b border-neutral-200 dark:border-white/5">
                 <img
                   src={`${basePath}/images/salud-laboral.png`}
                   alt="Soluciones en Salud Laboral Platform"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 px-2 sm:px-2.5 py-1 rounded-md bg-[#08090c]/85 backdrop-blur-md border border-white/10 text-[11px] sm:text-xs font-mono text-emerald-400">
+                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 dark:bg-[#08090c]/85 backdrop-blur-md border border-neutral-200 dark:border-white/10 text-xs font-mono text-emerald-600 dark:text-emerald-400">
                   Web SaaS &bull; En Producción
                 </div>
               </div>
 
-              <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     Soluciones en Salud Laboral
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2 leading-relaxed">
                     Plataforma web integral para la gestión, divulgación y asesoría en Seguridad y Salud en el Trabajo (SG-SST), auditorías y capacitaciones empresariales desplegada en la nube.
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     Python
                   </span>
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     Flask
                   </span>
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     Render Cloud
                   </span>
-                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-mono bg-white/5 border border-white/5 text-neutral-300">
+                  <span className="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-700 dark:text-neutral-300">
                     SG-SST
                   </span>
                 </div>
 
-                <div className="pt-3 sm:pt-4 border-t border-white/5 flex items-center justify-between">
+                <div className="pt-4 border-t border-neutral-200 dark:border-white/5 flex items-center justify-between">
                   <a
                     href="https://tutranquilidadlaboral.onrender.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span>Demo en Vivo</span>
@@ -484,7 +643,7 @@ export default function Home() {
                     href="https://github.com/Merc4x/proyecto_salud_laboral"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-mono text-neutral-400 hover:text-white transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                   >
                     <GithubIcon className="w-3.5 h-3.5" />
                     <span>Código</span>
@@ -495,150 +654,131 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION: STACK TECNOLÓGICO */}
-        <section id="habilidades" className="py-14 sm:py-20 border-b border-white/5">
-          <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
-            <div className="text-xs font-mono text-blue-400 tracking-wider">03 / ARSENAL TÉCNICO</div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
-              Herramientas y tecnologías.
+        {/* "HABILIDADES: HERRAMIENTAS CON LAS QUE CONSTRUYO" (Inspired by Duan Gómez Image 5) */}
+        <section id="habilidades" className="py-16 border-b border-neutral-200/80 dark:border-white/5">
+          <div className="space-y-2 mb-10">
+            <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider font-semibold">
+              Habilidades
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+              Herramientas con las que construyo.
             </h2>
-            <p className="text-neutral-400 max-w-2xl text-sm sm:text-base leading-relaxed">
-              Tecnologías dominadas para el desarrollo de soluciones completas de extremo a extremo.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {/* Category 1: Frontend */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#0f1117] border border-white/5 space-y-3">
-              <div className="flex items-center gap-2 text-blue-400 font-semibold text-sm">
-                <Code2 className="w-4 h-4" />
-                <span>Frontend</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Card 1: Frontend */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <Code2 className="w-5 h-5" />
               </div>
-              <ul className="space-y-2 text-xs text-neutral-300 font-mono">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                  React 19 &amp; Next.js 16
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                  TypeScript &amp; JavaScript
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                  Tailwind CSS v4
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                  HTML5 &amp; Responsive UI
-                </li>
-              </ul>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Frontend</h3>
+              <div className="flex flex-wrap gap-2">
+                {["React 19", "Next.js 16", "TypeScript", "JavaScript", "Tailwind CSS v4", "HTML5 / CSS3"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-800 dark:text-neutral-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Category 2: Backend */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#0f1117] border border-white/5 space-y-3">
-              <div className="flex items-center gap-2 text-purple-400 font-semibold text-sm">
-                <Cpu className="w-4 h-4" />
-                <span>Backend</span>
+            {/* Card 2: Backend */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                <Cpu className="w-5 h-5" />
               </div>
-              <ul className="space-y-2 text-xs text-neutral-300 font-mono">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
-                  Python (Flask, FastAPI)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
-                  Java (Spring Boot)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
-                  Node.js &amp; Express
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
-                  RESTful APIs Architecture
-                </li>
-              </ul>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Backend</h3>
+              <div className="flex flex-wrap gap-2">
+                {["Python", "Flask", "FastAPI", "Java", "Spring Boot", "Node.js", "APIs REST"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-800 dark:text-neutral-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Category 3: Databases */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#0f1117] border border-white/5 space-y-3">
-              <div className="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
-                <Layers className="w-4 h-4" />
-                <span>Bases de Datos</span>
+            {/* Card 3: Bases de datos */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <Layers className="w-5 h-5" />
               </div>
-              <ul className="space-y-2 text-xs text-neutral-300 font-mono">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  PostgreSQL
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  MongoDB
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  SQLite
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  Modelado Relacional &amp; SQL
-                </li>
-              </ul>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Bases de datos</h3>
+              <div className="flex flex-wrap gap-2">
+                {["PostgreSQL", "MongoDB", "SQLite", "Modelado de datos SQL"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-800 dark:text-neutral-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Category 4: Tools & DevOps */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#0f1117] border border-white/5 space-y-3">
-              <div className="flex items-center gap-2 text-cyan-400 font-semibold text-sm">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Herramientas &amp; DevOps</span>
+            {/* Card 4: Herramientas */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                <Wrench className="w-5 h-5" />
               </div>
-              <ul className="space-y-2 text-xs text-neutral-300 font-mono">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0" />
-                  Git &amp; GitHub
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0" />
-                  GitHub Actions CI/CD
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0" />
-                  Docker &amp; Linux
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0" />
-                  Postman &amp; VS Code
-                </li>
-              </ul>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Herramientas &amp; DevOps</h3>
+              <div className="flex flex-wrap gap-2">
+                {["Git", "GitHub", "GitHub Actions CI/CD", "Docker", "Linux", "VS Code", "Postman"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-800 dark:text-neutral-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Card 5: Habilidades blandas & Filosofía */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-4 sm:col-span-2 lg:col-span-2">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Metodología &amp; Habilidades Blandas</h3>
+              <div className="flex flex-wrap gap-2">
+                {["Vibe Coding & Flow", "Código Limpio", "Comunicación asertiva", "Trabajo en equipo", "Resolución de problemas", "Autogestión"].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/5 text-neutral-800 dark:text-neutral-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* SECTION: CONTACTO */}
-        <section id="contacto" className="pt-14 sm:pt-20">
-          <div className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#0f1117] to-[#08090c] border border-white/10 p-6 sm:p-14 text-center overflow-hidden">
-            {/* Ambient center blur */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[500px] h-[300px] bg-blue-600/10 blur-3xl pointer-events-none rounded-full" />
-
-            <div className="relative z-10 max-w-2xl mx-auto space-y-5 sm:space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] sm:text-xs font-mono text-neutral-300">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span>DISPONIBLE PARA NUEVAS OPORTUNIDADES</span>
+        <section id="contacto" className="pt-16">
+          <div className="relative rounded-3xl bg-gradient-to-b from-white to-neutral-100 dark:from-[#0f1117] dark:to-[#08090c] border border-neutral-200 dark:border-white/10 p-8 sm:p-14 text-center overflow-hidden shadow-lg">
+            <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-white/5 border border-blue-200 dark:border-white/10 text-xs font-mono text-blue-600 dark:text-neutral-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>¿Hablamos sobre tu próximo proyecto?</span>
               </div>
 
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
-                ¿Hablamos sobre tu próximo proyecto?
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-tight">
+                Construyamos algo extraordinario juntos.
               </h2>
 
-              <p className="text-neutral-400 text-xs sm:text-base leading-relaxed">
-                Abierto a propuestas como desarrollador, consultoría técnica y proyectos colaborativos. Contáctame por correo o mensaje directo.
+              <p className="text-neutral-600 dark:text-neutral-300 text-sm sm:text-base leading-relaxed">
+                Abierto a propuestas como desarrollador, proyectos colaborativos o vacantes de ingeniería. Contáctame directamente por correo o WhatsApp.
               </p>
 
-              {/* Full width stacked buttons on mobile */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 pt-3">
                 <a
                   href="mailto:alejo.quiroz2534@gmail.com"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 transition-all shadow-lg shadow-white/10 active:scale-95 break-all text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95"
                 >
                   <Mail className="w-4 h-4 shrink-0" />
                   <span>alejo.quiroz2534@gmail.com</span>
@@ -648,32 +788,30 @@ export default function Home() {
                   href="https://wa.me/573116425806"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/20 active:scale-95"
                 >
                   <Phone className="w-4 h-4 shrink-0" />
                   <span>+57 311 642 5806</span>
                 </a>
 
-                <a
-                  href="https://github.com/Merc4x"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium text-xs sm:text-sm transition-all border border-white/10 active:scale-95 text-center"
+                <button
+                  onClick={handleCopyEmail}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-neutral-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm"
                 >
-                  <GithubIcon className="w-4 h-4 shrink-0" />
-                  <span>GitHub</span>
-                </a>
+                  {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-neutral-500" />}
+                  <span>{copied ? "Copiado al portapapeles" : "Copiar Correo"}</span>
+                </button>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="border-t border-white/5 py-6 sm:py-8 text-center text-[11px] sm:text-xs text-neutral-500 font-mono">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+      {/* MINIMALIST FOOTER */}
+      <footer className="border-t border-neutral-200 dark:border-white/5 py-8 text-center text-xs text-neutral-500 dark:text-neutral-500 font-mono">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>&copy; {new Date().getFullYear()} Alejandro Mercado &bull; Portafolio Profesional</p>
-          <p>Next.js 16 &bull; TypeScript &bull; Tailwind CSS</p>
+          <p>Medellín, Colombia &bull; TdeA</p>
         </div>
       </footer>
     </div>
