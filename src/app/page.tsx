@@ -611,9 +611,12 @@ export default function Home() {
 
         {/* SECTION: CONTACTO */}
         <section id="contacto" className="pt-16 sm:pt-20">
-          <div className="relative rounded-3xl bg-gradient-to-b from-white via-slate-50 to-slate-100/90 dark:from-[#0f1117] dark:to-[#08090c] border border-slate-200/90 dark:border-white/10 p-8 sm:p-14 text-center overflow-hidden shadow-[0_10px_35px_-5px_rgba(15,23,42,0.08)] dark:shadow-xl">
+          <div className="relative rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 p-8 sm:p-14 text-center overflow-hidden shadow-xl">
+            {/* Ambient center blur */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[250px] bg-blue-500/10 dark:bg-blue-600/10 blur-3xl pointer-events-none rounded-full" />
+
             <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-white/5 border border-blue-200/80 dark:border-white/10 text-xs font-mono font-semibold text-blue-700 dark:text-neutral-300 shadow-2xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-white/5 border border-blue-200/80 dark:border-white/10 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span>Contacto Directo</span>
               </div>
