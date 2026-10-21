@@ -27,7 +27,6 @@ import {
   Activity,
   Zap,
   Radio,
-  FileCode2,
 } from "lucide-react";
 
 // Base path helper for GitHub Pages repository deployment (/portafolio)
@@ -216,135 +215,113 @@ export default function Home() {
       </header>
 
       {/* MAIN CONTENT AREA */}
-      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 md:pt-20 pb-24">
-        {/* HERO SECTION: ORIGINAL HIGH-TECH SPLIT ARCHITECTURE */}
-        <section className="grid lg:grid-cols-12 gap-10 sm:gap-14 items-center pb-16 sm:pb-24 border-b border-neutral-200/80 dark:border-white/5">
-          {/* Left Column: Identity, Narrative & Actions */}
-          <div className="lg:col-span-7 space-y-6">
-            {/* Status & University Chip */}
-            <div className="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-cyan-400 text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-              <span>4.° Semestre &bull; Ing. de Software en TdeA &bull; Medellín</span>
-            </div>
+      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-14 pb-24">
+        {/* HERO SECTION: FOTO COMO ELEMENTO PRINCIPAL Y PROTAGÓNICO */}
+        <section className="text-center space-y-6 sm:space-y-7 pb-16 sm:pb-20 border-b border-neutral-200/80 dark:border-white/5">
+          {/* 1. TU FOTO DE PERFIL ES LO PRIMERO QUE SE VE */}
+          <div className="flex flex-col items-center justify-center pt-2 sm:pt-4">
+            <div className="relative group">
+              {/* Glowing aura frame */}
+              <div className="absolute -inset-1.5 rounded-[2.2rem] bg-gradient-to-tr from-blue-600/30 via-indigo-600/25 to-cyan-500/30 blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
 
-            {/* Impactful Original Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-[1.12]">
-              Arquitectura de software con{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cyan-400 dark:via-blue-400 dark:to-indigo-300 bg-clip-text text-transparent">
-                precisión, cadencia y flow.
-              </span>
-            </h1>
-
-            {/* Pitch */}
-            <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-2xl">
-              Soy <strong className="text-neutral-900 dark:text-white font-semibold">Alejandro Mercado</strong> (<span className="font-mono text-blue-600 dark:text-cyan-400 font-medium">@Merc4x</span>). Diseñador y desarrollador Full Stack especializado en la creación de herramientas de escritorio nativas con IA, APIs escalables y aplicaciones web completas en producción.
-            </p>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-              <a
-                href="#proyectos"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95 text-center"
-              >
-                <span>Explorar Proyectos</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-
-              <a
-                href="https://wa.me/573116425806"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-neutral-800 dark:text-white font-medium text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm text-center"
-              >
-                <Phone className="w-4 h-4 text-emerald-500" />
-                <span>WhatsApp Directo</span>
-              </a>
-
-              <button
-                onClick={handleCopyEmail}
-                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-neutral-600 dark:text-neutral-300 font-medium text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm text-center"
-                title="Copiar correo"
-              >
-                {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-neutral-400" />}
-                <span>{copied ? "Copiado" : "Copiar Email"}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right Column: Original Developer Identity Terminal & Photo Card */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div className="w-full max-w-sm rounded-3xl bg-white dark:bg-[#0f1117] border border-neutral-200 dark:border-white/10 shadow-2xl p-5 space-y-4">
-              {/* Terminal header */}
-              <div className="flex items-center justify-between pb-2 border-b border-neutral-100 dark:border-white/5 text-xs font-mono text-neutral-500 dark:text-neutral-400">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <span className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <span className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                </div>
-                <span>merc4x.profile.tsx</span>
-              </div>
-
-              {/* Photo Frame Container */}
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 group">
+              {/* Main Photo Container */}
+              <div className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-[2rem] overflow-hidden bg-neutral-200 dark:bg-neutral-900 border-2 border-neutral-300 dark:border-white/20 shadow-2xl group-hover:scale-105 transition-transform duration-300">
                 <img
                   src={`${basePath}/images/avatar.png`}
                   alt="Alejandro Mercado"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover"
                 />
-
-                {/* Status Indicator */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/90 dark:bg-[#08090c]/90 backdrop-blur-md border border-neutral-200 dark:border-white/10 text-[11px] font-mono text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Alejandro Mercado</span>
-                </div>
-
-                {/* Custom photo hint */}
-                <div className="absolute bottom-3 inset-x-3 text-center px-2 py-1 rounded-md bg-white/90 dark:bg-[#08090c]/90 backdrop-blur-md border border-neutral-200 dark:border-white/10 text-[10px] text-neutral-500 dark:text-neutral-400">
-                  Foto: <code className="text-blue-600 dark:text-cyan-400">public/images/avatar.png</code>
-                </div>
               </div>
 
-              {/* Specs & Capabilities mini-matrix */}
-              <div className="space-y-2 pt-1 font-mono text-xs">
-                <div className="flex justify-between items-center text-neutral-600 dark:text-neutral-400">
-                  <span>Carrera:</span>
-                  <span className="text-neutral-900 dark:text-white font-semibold">Ing. Software (TdeA)</span>
-                </div>
-                <div className="flex justify-between items-center text-neutral-600 dark:text-neutral-400">
-                  <span>Semestre:</span>
-                  <span className="text-blue-600 dark:text-cyan-400 font-semibold">4.° Semestre actual</span>
-                </div>
-                <div className="flex justify-between items-center text-neutral-600 dark:text-neutral-400">
-                  <span>Especialidad:</span>
-                  <span className="text-neutral-900 dark:text-white">Full Stack &bull; Audio AI</span>
-                </div>
+              {/* Floating status beacon */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white dark:bg-[#0f1117] border border-neutral-200 dark:border-white/15 text-xs font-mono text-neutral-800 dark:text-neutral-200 shadow-lg">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Disponible para trabajar</span>
               </div>
             </div>
+
+            {/* Note to swap photo */}
+            <div className="mt-4 text-center">
+              <span className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
+                Tu foto en: <code className="text-blue-600 dark:text-cyan-400 font-semibold">public/images/avatar.png</code>
+              </span>
+            </div>
+          </div>
+
+          {/* 2. DATOS DE ESTUDIO Y UBICACIÓN */}
+          <div className="pt-1">
+            <div className="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-cyan-400 text-xs font-mono">
+              <span>Ingeniería de Software &bull; 4.° Semestre en TdeA &bull; Medellín, CO</span>
+            </div>
+          </div>
+
+          {/* 3. NOMBRE Y TITULAR DE IMPACTO ORIGINAL */}
+          <div className="space-y-2 max-w-3xl mx-auto">
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-[1.1]">
+              Alejandro Mercado
+            </h1>
+            <p className="text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cyan-400 dark:via-blue-400 dark:to-indigo-300 bg-clip-text text-transparent leading-[1.2]">
+              Arquitectura de software con precisión, cadencia y flow.
+            </p>
+          </div>
+
+          {/* 4. BIO SUCINTA */}
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-2xl mx-auto">
+            Desarrollador Full Stack enfocado en la construcción de herramientas de escritorio con IA de audio, microservicios y plataformas web de alto rendimiento con <strong className="text-neutral-900 dark:text-white font-semibold">Python, Next.js, Flask</strong> y <strong className="text-neutral-900 dark:text-white font-semibold">Spring Boot</strong>.
+          </p>
+
+          {/* 5. BOTONES DE ACCIÓN RÁPIDA */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 max-w-md mx-auto sm:max-w-none">
+            <a
+              href="#proyectos"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-500/25 active:scale-95 text-center"
+            >
+              <span>Explorar Proyectos</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+
+            <a
+              href="https://wa.me/573116425806"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-emerald-600 dark:text-emerald-400 font-semibold text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm text-center"
+            >
+              <Phone className="w-4 h-4" />
+              <span>WhatsApp Directo</span>
+            </a>
+
+            <button
+              onClick={handleCopyEmail}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-neutral-700 dark:text-neutral-300 font-medium text-sm transition-all border border-neutral-200 dark:border-white/10 active:scale-95 shadow-sm text-center"
+            >
+              {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-neutral-400" />}
+              <span>{copied ? "Copiado al portapapeles" : "Copiar Email"}</span>
+            </button>
           </div>
         </section>
 
         {/* METRICS & VALUE MATRIX STRIP */}
         <section className="py-12 border-b border-neutral-200/80 dark:border-white/5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1 text-center sm:text-left">
               <div className="text-xs font-mono text-blue-600 dark:text-cyan-400 font-medium">Educación Formal</div>
               <div className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">4.° Semestre</div>
               <div className="text-xs text-neutral-500 dark:text-neutral-400">Ingeniería en TdeA</div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1 text-center sm:text-left">
               <div className="text-xs font-mono text-blue-600 dark:text-cyan-400 font-medium">Desktop AI</div>
               <div className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">60 FPS HUD</div>
               <div className="text-xs text-neutral-500 dark:text-neutral-400">WASAPI Loopback Audio</div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1 text-center sm:text-left">
               <div className="text-xs font-mono text-blue-600 dark:text-cyan-400 font-medium">Arquitectura</div>
               <div className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">Full Stack</div>
               <div className="text-xs text-neutral-500 dark:text-neutral-400">Python + Next.js + Spring</div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1117] border border-neutral-200/80 dark:border-white/10 shadow-sm space-y-1 text-center sm:text-left">
               <div className="text-xs font-mono text-blue-600 dark:text-cyan-400 font-medium">Ubicación</div>
               <div className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">Medellín</div>
               <div className="text-xs text-neutral-500 dark:text-neutral-400">Colombia (UTC-5)</div>
@@ -684,7 +661,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="border-t border-neutral-200 dark:border-white/5 py-8 text-center text-xs text-neutral-500 font-mono">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>&copy; {new Date().getFullYear()} Alejandro Mercado &bull; Merc4x</p>
           <p>Medellín, Colombia &bull; TdeA Ingeniería de Software</p>
         </div>
