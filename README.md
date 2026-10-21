@@ -2,8 +2,8 @@
 
 > Minimalist personal portfolio and project showcase built with Next.js, TypeScript, and Tailwind CSS. Deployed via GitHub Actions to GitHub Pages.
 
-[![Deployment Status](https://github.com/Merc4x/Merc4x.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/Merc4x/Merc4x.github.io/actions/workflows/deploy.yml)
-[![Live Site](https://img.shields.io/badge/Live_Site-merc4x.github.io-08090c?style=flat&logo=github&logoColor=white)](https://merc4x.github.io)
+[![Deployment Status](https://github.com/Merc4x/portafolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Merc4x/portafolio/actions/workflows/deploy.yml)
+[![Live Site](https://img.shields.io/badge/Live_Site-merc4x.github.io/portafolio-08090c?style=flat&logo=github&logoColor=white)](https://merc4x.github.io/portafolio/)
 [![Stack](https://img.shields.io/badge/Stack-Next.js_16_|_TypeScript_|_Tailwind_CSS-38bdf8?style=flat)](https://nextjs.org)
 
 ---
@@ -38,8 +38,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/Merc4x/Merc4x.github.io.git
-cd Merc4x.github.io
+git clone https://github.com/Merc4x/portafolio.git
+cd portafolio
 
 # Install dependencies
 npm install
@@ -64,7 +64,8 @@ npm run build
 ## Author
 
 - **Alejandro Mercado**
+- **Education:** Estudiante de 4.° semestre de Ingeniería de Software en el Tecnológico de Antioquia (TdeA)
 - **Email:** [alejo.quiroz2534@gmail.com](mailto:alejo.quiroz2534@gmail.com)
 - **GitHub:** [@Merc4x](https://github.com/Merc4x)
 - **LinkedIn:** [alejandro-mercado](https://linkedin.com/in/alejandro-mercado)
-- **Location:** Colombia
+- **Location:** Medellín, Colombia

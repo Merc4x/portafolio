@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Alejandro Mercado | Full Stack Developer",
-  description: "Portafolio profesional de Alejandro Mercado (Merc4x) — Estudiante de Ingeniería de Software y Desarrollador Full Stack.",
-  keywords: ["Alejandro Mercado", "Merc4x", "Full Stack Developer", "Ingeniería de Software", "React", "Next.js", "Python", "Spring Boot"],
+  description: "Portafolio profesional de Alejandro Mercado (Merc4x) — Estudiante de 4.° semestre de Ingeniería de Software en el Tecnológico de Antioquia (TdeA) y Desarrollador Full Stack.",
+  keywords: ["Alejandro Mercado", "Merc4x", "TdeA", "Tecnológico de Antioquia", "Ingeniería de Software", "Full Stack Developer", "React", "Next.js", "Python", "Spring Boot"],
   authors: [{ name: "Alejandro Mercado", url: "https://github.com/Merc4x" }],
   openGraph: {
     title: "Alejandro Mercado | Full Stack Developer",
-    description: "Estudiante de Ingeniería de Software & Desarrollador Full Stack.",
-    url: "https://merc4x.github.io",
+    description: "Estudiante de 4.° semestre de Ingeniería de Software en TdeA & Desarrollador Full Stack.",
+    url: "https://merc4x.github.io/portafolio",
     siteName: "Alejandro Mercado Portfolio",
     locale: "es_CO",
     type: "website",
