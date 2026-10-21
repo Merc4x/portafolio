@@ -238,13 +238,6 @@ export default function Home() {
                 <span>Disponible para trabajar</span>
               </div>
             </div>
-
-            {/* Note to swap photo */}
-            <div className="mt-4 text-center">
-              <span className="text-[11px] font-mono text-slate-500 dark:text-neutral-400">
-                Tu foto en: <code className="text-blue-600 dark:text-cyan-400 font-semibold bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded border border-blue-200/70 dark:border-transparent">public/images/avatar.png</code>
-              </span>
-            </div>
           </div>
 
           {/* 2. DATOS DE ESTUDIO Y UBICACIÓN */}
