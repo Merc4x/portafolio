@@ -226,7 +226,7 @@ export default function Home() {
               {/* Main Photo Container with crisp shadow */}
               <div className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-[2rem] overflow-hidden bg-white dark:bg-neutral-900 border-2 border-slate-200 dark:border-white/20 shadow-xl shadow-slate-200/70 dark:shadow-2xl group-hover:scale-105 transition-transform duration-300">
                 <img
-                  src={`${basePath}/images/avatar.png`}
+                  src={`${basePath}/images/alejandro-mercado.jpg`}
                   alt="Alejandro Mercado"
                   className="w-full h-full object-cover"
                 />
