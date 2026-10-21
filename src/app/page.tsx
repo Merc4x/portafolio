@@ -97,17 +97,11 @@ export default function Home() {
       {/* TOP NAVIGATION BAR */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-[#08090c]/85 border-b border-neutral-200/80 dark:border-white/5 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Brand with mini photo */}
+          {/* Brand with blue beacon and MERC4X.DEV */}
           <a href="#" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-full overflow-hidden border border-neutral-200 dark:border-white/10 shrink-0">
-              <img
-                src={`${basePath}/images/avatar.png`}
-                alt="Alejandro Mercado"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <span className="font-semibold text-sm tracking-tight text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-              Alejandro Mercado
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 group-hover:scale-125 transition-transform" />
+            <span className="font-mono text-sm tracking-wider font-semibold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              MERC4X<span className="text-blue-600 dark:text-blue-500">.DEV</span>
             </span>
           </a>
 
