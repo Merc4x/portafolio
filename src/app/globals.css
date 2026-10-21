@@ -1,11 +1,48 @@
 @import "tailwindcss";
 
-:root {
-  --background: #08090c;
-  --foreground: #e1e4ea;
+@layer base {
+  :root {
+    --background: #08090c;
+    --foreground: #e1e4ea;
+    --card: #0f1117;
+    --card-border: rgba(255, 255, 255, 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: #08090c;
+    color: #e1e4ea;
+    font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
 }
 
-body {
-  background-color: #08090c;
-  color: #e1e4ea;
+/* Custom subtle aura and glow utilities */
+.glass-panel {
+  background: rgba(15, 17, 23, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-panel-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(20, 23, 31, 0.85);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glow-blue {
+  box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.2);
+}
+
+.glow-subtle {
+  box-shadow: 0 0 25px -5px rgba(255, 255, 255, 0.04);
 }
