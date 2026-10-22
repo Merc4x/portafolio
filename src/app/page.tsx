@@ -105,6 +105,9 @@ export default function Home() {
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-neutral-400">
+            <a href="#sobre-mi" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+              Sobre mí
+            </a>
             <a href="#proyectos" className="hover:text-slate-900 dark:hover:text-white transition-colors">
               Proyectos
             </a>
@@ -168,6 +171,13 @@ export default function Home() {
           <div className="md:hidden border-t border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#0c0e14]/95 backdrop-blur-2xl px-5 py-6 space-y-4 shadow-xl">
             <nav className="flex flex-col space-y-2 font-medium text-base text-slate-800 dark:text-neutral-200">
               <a
+                href="#sobre-mi"
+                onClick={closeMenu}
+                className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+              >
+                Sobre mí
+              </a>
+              <a
                 href="#proyectos"
                 onClick={closeMenu}
                 className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
@@ -221,10 +231,10 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center pt-2 sm:pt-4">
             <div className="relative group">
               {/* Glowing aura frame (soft sky/blue in light mode, cyan/indigo in dark mode) */}
-              <div className="absolute -inset-1.5 rounded-[2.2rem] bg-gradient-to-tr from-blue-500/25 via-indigo-500/20 to-sky-400/25 dark:from-blue-600/30 dark:via-indigo-600/25 dark:to-cyan-500/30 blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-blue-500/25 via-indigo-500/20 to-sky-400/25 dark:from-blue-600/30 dark:via-indigo-600/25 dark:to-cyan-500/30 blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
 
               {/* Main Photo Container with crisp shadow */}
-              <div className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-[2rem] overflow-hidden bg-white dark:bg-neutral-900 border-2 border-slate-200 dark:border-white/20 shadow-xl shadow-slate-200/70 dark:shadow-2xl group-hover:scale-105 transition-transform duration-300">
+              <div className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden bg-white dark:bg-neutral-900 border-2 border-slate-200 dark:border-white/20 shadow-xl shadow-slate-200/70 dark:shadow-2xl group-hover:scale-105 transition-transform duration-300">
                 <img
                   src={`${basePath}/images/alejandro-mercado.jpg`}
                   alt="Alejandro Mercado"
@@ -248,9 +258,9 @@ export default function Home() {
           </div>
 
           {/* 3. NOMBRE Y TITULAR DE IMPACTO ORIGINAL */}
-          <div className="space-y-2 max-w-3xl mx-auto">
+          <div className="space-y-3 max-w-3xl mx-auto">
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.1]">
-              Alejandro Mercado
+              Hola, soy Alejo.
             </h1>
             <p className="text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-600 dark:from-cyan-400 dark:via-blue-400 dark:to-indigo-300 bg-clip-text text-transparent leading-[1.2]">
               Arquitectura de software con precisión, cadencia y flow.
@@ -317,6 +327,62 @@ export default function Home() {
               <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 font-semibold">Ubicación</div>
               <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono">Medellín</div>
               <div className="text-xs text-slate-500 dark:text-neutral-400">Colombia (UTC-5)</div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION: SOBRE MÍ */}
+        <section id="sobre-mi" className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
+          <div className="space-y-3 mb-10">
+            <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 uppercase tracking-wider font-bold">
+              Perfil Profesional
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+              Sobre mí.
+            </h2>
+            <p className="text-slate-600 dark:text-neutral-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+              Desarrollador de software en constante evolución, apasionado por resolver problemas técnicos complejos mediante interfaces fluidas y arquitecturas robustas.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: Formación y Origen */}
+            <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.08)] hover:border-blue-300 dark:hover:border-white/20 transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-100/80 dark:bg-blue-900/30 border border-blue-200 dark:border-transparent flex items-center justify-center text-blue-700 dark:text-cyan-400 shadow-2xs">
+                <GraduationCap className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                Ingeniería &amp; Academia
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
+                Estudiante de 4.° semestre de Ingeniería de Software en el Tecnológico de Antioquia (TdeA) en Medellín, Colombia. Mi formación académica me brinda bases firmes en algoritmos, estructuras de datos y patrones de diseño.
+              </p>
+            </div>
+
+            {/* Card 2: Qué Construyo */}
+            <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.08)] hover:border-indigo-300 dark:hover:border-white/20 transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-100/80 dark:bg-indigo-900/30 border border-indigo-200 dark:border-transparent flex items-center justify-center text-indigo-700 dark:text-indigo-400 shadow-2xs">
+                <Code2 className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                Enfoque Full Stack &amp; IA
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
+                Me especializo en ecosistemas modernos: Python para microservicios y soluciones de IA (modelos de audio, VAD, transcripción), junto con Next.js, React y TypeScript para interfaces web reactivas y accesibles.
+              </p>
+            </div>
+
+            {/* Card 3: Mentalidad y Cultura */}
+            <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.08)] hover:border-emerald-300 dark:hover:border-white/20 transition-all space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-900/30 border border-emerald-200 dark:border-transparent flex items-center justify-center text-emerald-700 dark:text-emerald-400 shadow-2xs">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                Cadencia &amp; Autonomía
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
+                Creo firmemente en el aprendizaje acelerado y el flujo continuo de entrega. Combino metodologías ágiles y prototipado rápido con disciplina para producir software limpio, mantenible y listo para producción.
+              </p>
             </div>
           </div>
         </section>
