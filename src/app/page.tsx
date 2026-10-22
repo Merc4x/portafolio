@@ -563,11 +563,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Project 2: LiveCopilot */}
+            {/* Project 2: LiveCopilot (Layout Alternado: Mockup a la izquierda, Texto a la derecha) */}
             <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                {/* Columna Izquierda: Información, Features y Acciones */}
-                <div className="lg:col-span-6 space-y-5">
+                {/* Columna Texto: En mobile va primero, en desktop pasa a la derecha (order-2) */}
+                <div className="lg:col-span-6 space-y-5 lg:order-2">
                   <div className="space-y-2">
                     <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
                       Desktop AI Copilot &bull; Audio &amp; VAD en Tiempo Real
@@ -633,8 +633,8 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
-                <div className="lg:col-span-6 relative">
+                {/* Columna Mockup: En mobile va segundo, en desktop pasa a la izquierda (order-1) */}
+                <div className="lg:col-span-6 relative lg:order-1">
                   <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
                     {/* Traffic lights + URL Bar */}
                     <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
@@ -659,7 +659,7 @@ export default function Home() {
                   </div>
 
                   {/* Floating depth badge */}
-                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
                     <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                     <span>WASAPI &bull; 60 FPS HUD</span>
                   </div>
@@ -667,7 +667,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Project 2: Soluciones en Salud Laboral */}
+            {/* Project 3: Soluciones en Salud Laboral */}
             <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                 {/* Columna Izquierda: Información, Features y Acciones */}
