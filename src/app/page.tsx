@@ -43,10 +43,19 @@ function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.82 12.04 21.82C17.5 21.82 21.95 17.37 21.95 11.91C21.95 6.45 17.5 2 12.04 2M12.05 3.67C16.59 3.67 20.28 7.36 20.28 11.9C20.28 16.44 16.59 20.13 12.05 20.13C10.58 20.13 9.17 19.74 7.94 19.01L7.65 18.84L4.54 19.66L5.37 16.63L5.18 16.33C4.39 15.07 3.97 13.51 3.97 11.9C3.97 7.36 7.66 3.67 12.05 3.67M9.16 7.23C8.97 7.23 8.79 7.24 8.64 7.42C8.42 7.64 7.78 8.24 7.78 9.47C7.78 10.7 8.68 11.88 8.8 12.05C8.93 12.22 10.57 14.73 13.08 15.82C13.68 16.08 14.15 16.24 14.51 16.35C15.12 16.54 15.67 16.52 16.11 16.45C16.6 16.38 17.62 15.83 17.83 15.24C18.04 14.65 18.04 14.15 17.98 14.04C17.92 13.93 17.75 13.87 17.5 13.74C17.25 13.62 16.02 13.01 15.79 12.93C15.56 12.84 15.4 12.8 15.23 13.05C15.06 13.3 14.58 13.87 14.43 14.04C14.28 14.21 14.14 14.23 13.89 14.11C13.64 13.98 12.83 13.72 11.87 12.86C11.12 12.19 10.61 11.37 10.46 11.12C10.31 10.87 10.44 10.73 10.57 10.61C10.68 10.5 10.82 10.32 10.95 10.17C11.08 10.02 11.12 9.92 11.21 9.75C11.3 9.58 11.25 9.43 11.19 9.31C11.13 9.19 10.64 7.98 10.43 7.48C10.23 7 10.03 7.07 9.87 7.06C9.72 7.05 9.55 7.05 9.38 7.05L9.16 7.23Z" />
+    </svg>
+  );
+}
+
 export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [copied, setCopied] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   // Initialize theme from localStorage or default to dark
   useEffect(() => {
@@ -62,6 +71,42 @@ export default function Home() {
       document.documentElement.classList.add("dark");
       setTheme("dark");
     }
+  }, []);
+
+  // Track scroll progress for the interactive top HUD bar
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / totalScroll) * 100)));
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // IntersectionObserver for smooth scroll-reveal animations as the user navigates down
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("opacity-100", "translate-y-0");
+            entry.target.classList.remove("opacity-0", "translate-y-8");
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    const elements = document.querySelectorAll(".reveal-on-scroll");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
   }, []);
 
   const toggleTheme = () => {
@@ -93,7 +138,13 @@ export default function Home() {
       </div>
 
       {/* TOP FLOATING HUD NAVIGATION BAR (SIEMPRE VISIBLE Y FIJO AL HACER SCROLL) */}
-      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-white/85 dark:bg-[#08090c]/85 border-b border-slate-200/80 dark:border-white/10 shadow-xs transition-colors">
+      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-white/85 dark:bg-[#08090c]/85 border-b border-slate-200/80 dark:border-white/10 shadow-xs transition-colors overflow-hidden">
+        {/* Barra interactiva superior de progreso de scroll */}
+        <div
+          className="absolute bottom-0 left-0 h-[2.5px] bg-gradient-to-r from-blue-600 via-sky-400 to-indigo-500 transition-all duration-150 ease-out z-10"
+          style={{ width: `${scrollProgress}%` }}
+        />
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Brand with blue beacon */}
           <a href="#" className="flex items-center gap-2.5 group shrink-0">
@@ -164,9 +215,9 @@ export default function Home() {
               href="https://wa.me/573116425806"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-md shadow-emerald-500/20 active:scale-95"
             >
-              <Phone className="w-3.5 h-3.5" />
+              <WhatsAppIcon className="w-3.5 h-3.5" />
               <span>WhatsApp</span>
             </a>
 
@@ -228,10 +279,10 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={closeMenu}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm shadow-md"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm shadow-md"
               >
-                <Phone className="w-4 h-4" />
-                <span>Escríbeme por WhatsApp</span>
+                <WhatsAppIcon className="w-4 h-4" />
+                <span>WhatsApp</span>
               </a>
             </div>
           </div>
@@ -241,7 +292,7 @@ export default function Home() {
       {/* MAIN CONTENT AREA CON PADDING TOP ADECUADO PARA EL HUD FIJO */}
       <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-24">
         {/* HERO SECTION: FOTO COMO ELEMENTO PRINCIPAL Y PROTAGÓNICO */}
-        <section className="text-center space-y-6 sm:space-y-7 pb-16 sm:pb-20 border-b border-slate-200/80 dark:border-white/5">
+        <section className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out text-center space-y-6 sm:space-y-7 pb-16 sm:pb-20 border-b border-slate-200/80 dark:border-white/5">
           {/* 1. TU FOTO DE PERFIL ES LO PRIMERO QUE SE VE */}
           <div className="flex flex-col items-center justify-center pt-2 sm:pt-4">
             <div className="relative group">
@@ -303,7 +354,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-center"
             >
-              <Phone className="w-4 h-4" />
+              <WhatsAppIcon className="w-4 h-4" />
               <span>WhatsApp Directo</span>
             </a>
 
@@ -318,7 +369,7 @@ export default function Home() {
         </section>
 
         {/* METRICS & VALUE MATRIX STRIP */}
-        <section className="py-12 border-b border-slate-200/80 dark:border-white/5">
+        <section className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out py-12 border-b border-slate-200/80 dark:border-white/5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05)] space-y-1 text-center sm:text-left hover:border-blue-300 dark:hover:border-white/20 transition-all">
               <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 font-semibold">Educación Formal</div>
@@ -347,7 +398,7 @@ export default function Home() {
         </section>
 
         {/* SECTION: SOBRE MÍ (DISEÑO EDITORIAL 2 COLUMNAS INSPIRADO) */}
-        <section id="sobre-mi" className="py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
+        <section id="sobre-mi" className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
             {/* Columna Izquierda: Eyebrow + Gran Titular */}
             <div className="lg:col-span-5 space-y-3">
@@ -390,7 +441,7 @@ export default function Home() {
         </section>
 
         {/* FEATURED PROJECTS: SHOWCASE INSPIRADO EN LA REFERENCIA */}
-        <section id="proyectos" className="py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
+        <section id="proyectos" className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div className="space-y-3">
               <span className="text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
@@ -416,7 +467,7 @@ export default function Home() {
 
           <div className="space-y-10 sm:space-y-12">
             {/* Project 1: LiveCopilot */}
-            <div className="group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+            <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                 {/* Columna Izquierda: Información, Features y Acciones */}
                 <div className="lg:col-span-6 space-y-5">
@@ -520,7 +571,7 @@ export default function Home() {
             </div>
 
             {/* Project 2: Soluciones en Salud Laboral */}
-            <div className="group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+            <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                 {/* Columna Izquierda: Información, Features y Acciones */}
                 <div className="lg:col-span-6 space-y-5">
@@ -626,7 +677,7 @@ export default function Home() {
         </section>
 
         {/* ENFOQUE & METODOLOGÍA: PILARES */}
-        <section id="enfoque" className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
+        <section id="enfoque" className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
           <div className="space-y-3 mb-12">
             <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 uppercase tracking-wider font-bold">
               Metodología de Trabajo
@@ -682,7 +733,7 @@ export default function Home() {
         </section>
 
         {/* ARSENAL TECNOLÓGICO */}
-        <section id="stack" className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
+        <section id="stack" className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
           <div className="space-y-3 mb-12">
             <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 uppercase tracking-wider font-bold">
               Habilidades Técnicas
@@ -768,7 +819,7 @@ export default function Home() {
         </section>
 
         {/* SECTION: CONTACTO */}
-        <section id="contacto" className="pt-16 sm:pt-20">
+        <section id="contacto" className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out pt-16 sm:pt-20">
           <div className="relative rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 p-8 sm:p-14 text-center overflow-hidden shadow-xl">
             {/* Ambient center blur */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[250px] bg-blue-500/10 dark:bg-blue-600/10 blur-3xl pointer-events-none rounded-full" />
@@ -800,10 +851,10 @@ export default function Home() {
                   href="https://wa.me/573116425806"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-center"
                 >
-                  <Phone className="w-4 h-4 shrink-0" />
-                  <span>+57 311 642 5806</span>
+                  <WhatsAppIcon className="w-4 h-4 shrink-0" />
+                  <span>WhatsApp</span>
                 </a>
 
                 <button
