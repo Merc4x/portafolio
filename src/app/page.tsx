@@ -459,7 +459,111 @@ export default function Home() {
           </div>
 
           <div className="space-y-10 sm:space-y-12">
-            {/* Project 1: LiveCopilot */}
+            {/* Project 1: WMS */}
+            <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                {/* Columna Izquierda: Información, Features y Acciones */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="space-y-2">
+                    <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
+                      SaaS de Monitoreo de Flotas &bull; Tiempo Real
+                    </span>
+                    <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                      WMS
+                    </h3>
+                  </div>
+
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                    Plataforma multi-empresa para ver en tiempo real los vehículos de una pyme sobre el mapa de Medellín, con simulación GPS, geocercas inteligentes, alertas automáticas y reportes detallados.
+                  </p>
+
+                  {/* Bullet points con estilo idéntico a la referencia */}
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Mapa interactivo en vivo con simulador GPS sobre rutas reales de Medellín e historial.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Geocercas dibujadas a mano alzada y alertas automáticas de robo, desvío y exceso de parada.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Arquitectura frontend en Angular con Leaflet y base de datos SQLite con APIs optimizadas.</span>
+                    </li>
+                  </ul>
+
+                  {/* Tech stack pills */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {["Angular", "Node.js", "SQLite", "Leaflet", "Azure Functions", "TypeScript"].map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <a
+                      href="https://merc4x.github.io/WMS/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
+                    >
+                      <span>Ver demo en vivo</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
+
+                    <a
+                      href="https://github.com/Merc4x/WMS"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                      <span>Código</span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
+                <div className="lg:col-span-6 relative">
+                  <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                    {/* Traffic lights + URL Bar */}
+                    <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                      </div>
+                      <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                        merc4x.github.io/WMS
+                      </div>
+                    </div>
+
+                    {/* Screenshot Container */}
+                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                      <img
+                        src={`${basePath}/images/wms-preview.png`}
+                        alt="WMS Plataforma de Monitoreo de Flotas"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Floating depth badge */}
+                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                    <span>SaaS &bull; GPS en Vivo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Project 2: LiveCopilot */}
             <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                 {/* Columna Izquierda: Información, Features y Acciones */}
