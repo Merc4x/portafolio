@@ -344,27 +344,20 @@ export default function Home() {
               href="#proyectos"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/25 active:scale-95 text-center"
             >
-              <span>Explorar Proyectos</span>
+              <span>Explorar mis proyectos</span>
               <ArrowUpRight className="w-4 h-4" />
             </a>
 
             <a
-              href="https://wa.me/573116425806"
+              href="https://github.com/Merc4x"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition-all shadow-lg shadow-emerald-600/20 active:scale-95 text-center"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white font-semibold text-sm transition-all border border-slate-300 dark:border-white/10 shadow-sm active:scale-95 text-center"
             >
-              <WhatsAppIcon className="w-4 h-4" />
-              <span>WhatsApp Directo</span>
+              <GithubIcon className="w-4 h-4" />
+              <span>Ver GitHub</span>
+              <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-neutral-400" />
             </a>
-
-            <button
-              onClick={handleCopyEmail}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-sm transition-all border border-slate-300 dark:border-white/10 active:scale-95 shadow-sm text-center"
-            >
-              {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-400" />}
-              <span>{copied ? "Copiado al portapapeles" : "Copiar Email"}</span>
-            </button>
           </div>
         </section>
 
