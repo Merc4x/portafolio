@@ -92,43 +92,58 @@ export default function Home() {
         <div className="absolute bottom-[20%] left-[-10%] w-[500px] h-[500px] bg-indigo-200/35 dark:bg-purple-600/5 blur-3xl rounded-full" />
       </div>
 
-      {/* TOP FLOATING NAVIGATION BAR */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/85 dark:bg-[#08090c]/80 border-b border-slate-200/80 dark:border-white/5 shadow-xs transition-colors">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      {/* TOP FLOATING HUD NAVIGATION BAR (SIEMPRE VISIBLE Y FIJO AL HACER SCROLL) */}
+      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-white/85 dark:bg-[#08090c]/85 border-b border-slate-200/80 dark:border-white/10 shadow-xs transition-colors">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Brand with blue beacon */}
-          <a href="#" className="flex items-center gap-2.5 group">
+          <a href="#" className="flex items-center gap-2.5 group shrink-0">
             <span className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-blue-500 group-hover:scale-125 transition-transform shadow-xs" />
-            <span className="font-mono text-sm tracking-wider font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
+            <span className="font-mono text-sm tracking-wider font-bold text-slate-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
               MERC4X<span className="text-blue-600 dark:text-blue-500">.DEV</span>
             </span>
           </a>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-neutral-400">
-            <a href="#sobre-mi" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+          {/* Desktop Nav Links: HUD Central Isla Bien Organizada */}
+          <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 text-xs font-medium text-slate-600 dark:text-neutral-300 shadow-2xs">
+            <a
+              href="#sobre-mi"
+              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
+            >
               Sobre mí
             </a>
-            <a href="#proyectos" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+            <a
+              href="#proyectos"
+              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
+            >
               Proyectos
             </a>
-            <a href="#enfoque" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+            <a
+              href="#enfoque"
+              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
+            >
               Enfoque
             </a>
-            <a href="#stack" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+            <a
+              href="#stack"
+              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
+            >
               Tecnologías
             </a>
-            <a href="#contacto" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+            <a
+              href="#contacto"
+              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
+            >
               Contacto
             </a>
           </nav>
 
           {/* Header Action Buttons */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {/* Dark / Light Mode Switcher with crisp pill */}
             <button
               onClick={toggleTheme}
               aria-label="Cambiar tema"
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 transition-colors border border-slate-200 dark:border-white/5 shadow-xs"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 transition-colors border border-slate-200 dark:border-white/5 shadow-2xs"
             >
               {theme === "dark" ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
             </button>
@@ -139,7 +154,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 transition-colors border border-slate-200 dark:border-white/5 shadow-xs"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 transition-colors border border-slate-200 dark:border-white/5 shadow-2xs"
             >
               <GithubIcon className="w-4 h-4" />
             </a>
@@ -149,7 +164,7 @@ export default function Home() {
               href="https://wa.me/573116425806"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95"
             >
               <Phone className="w-3.5 h-3.5" />
               <span>WhatsApp</span>
@@ -223,8 +238,8 @@ export default function Home() {
         )}
       </header>
 
-      {/* MAIN CONTENT AREA */}
-      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-14 pb-24">
+      {/* MAIN CONTENT AREA CON PADDING TOP ADECUADO PARA EL HUD FIJO */}
+      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-24">
         {/* HERO SECTION: FOTO COMO ELEMENTO PRINCIPAL Y PROTAGÓNICO */}
         <section className="text-center space-y-6 sm:space-y-7 pb-16 sm:pb-20 border-b border-slate-200/80 dark:border-white/5">
           {/* 1. TU FOTO DE PERFIL ES LO PRIMERO QUE SE VE */}
@@ -331,58 +346,45 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION: SOBRE MÍ */}
-        <section id="sobre-mi" className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
-          <div className="space-y-3 mb-10">
-            <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 uppercase tracking-wider font-bold">
-              Perfil Profesional
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
-              Sobre mí.
-            </h2>
-            <p className="text-slate-600 dark:text-neutral-300 text-sm sm:text-base max-w-2xl leading-relaxed">
-              Desarrollador de software en constante evolución, apasionado por resolver problemas técnicos complejos mediante interfaces fluidas y arquitecturas robustas.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1: Formación y Origen */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.08)] hover:border-blue-300 dark:hover:border-white/20 transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-100/80 dark:bg-blue-900/30 border border-blue-200 dark:border-transparent flex items-center justify-center text-blue-700 dark:text-cyan-400 shadow-2xs">
-                <GraduationCap className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-950 dark:text-white">
-                Ingeniería &amp; Academia
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
-                Estudiante de 4.° semestre de Ingeniería de Software en el Tecnológico de Antioquia (TdeA) en Medellín, Colombia. Mi formación académica me brinda bases firmes en algoritmos, estructuras de datos y patrones de diseño.
-              </p>
+        {/* SECTION: SOBRE MÍ (DISEÑO EDITORIAL 2 COLUMNAS INSPIRADO) */}
+        <section id="sobre-mi" className="py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+            {/* Columna Izquierda: Eyebrow + Gran Titular */}
+            <div className="lg:col-span-5 space-y-3">
+              <span className="text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
+                Sobre mí
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.15]">
+                Aprendo rápido, entrego con cuidado.
+              </h2>
             </div>
 
-            {/* Card 2: Qué Construyo */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.08)] hover:border-indigo-300 dark:hover:border-white/20 transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-100/80 dark:bg-indigo-900/30 border border-indigo-200 dark:border-transparent flex items-center justify-center text-indigo-700 dark:text-indigo-400 shadow-2xs">
-                <Code2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-950 dark:text-white">
-                Enfoque Full Stack &amp; IA
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
-                Me especializo en ecosistemas modernos: Python para microservicios y soluciones de IA (modelos de audio, VAD, transcripción), junto con Next.js, React y TypeScript para interfaces web reactivas y accesibles.
+            {/* Columna Derecha: Párrafos de biografía + Badges */}
+            <div className="lg:col-span-7 space-y-6 text-slate-600 dark:text-neutral-300 text-base sm:text-lg leading-relaxed">
+              <p>
+                Desarrollador de software con enfoque autodidacta, técnico en Desarrollo de Software y estudiante de Ingeniería de Software en el <strong className="text-slate-900 dark:text-white font-semibold">Tecnológico de Antioquia (TdeA)</strong>. Construyo aplicaciones de punta a punta —del diseño de la interfaz a la API y la base de datos— y tengo experiencia en el sector deportivo. Me caracterizo por mi responsabilidad, compromiso y capacidad de adaptación.
               </p>
-            </div>
+              <p>
+                Busco seguir creciendo en un equipo donde pueda aportar mis habilidades técnicas y de trabajo en equipo, y ampliar mis conocimientos en distintas áreas de la programación.
+              </p>
 
-            {/* Card 3: Mentalidad y Cultura */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_8px_24px_-4px_rgba(15,23,42,0.08)] hover:border-emerald-300 dark:hover:border-white/20 transition-all space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-900/30 border border-emerald-200 dark:border-transparent flex items-center justify-center text-emerald-700 dark:text-emerald-400 shadow-2xs">
-                <Sparkles className="w-5 h-5" />
+              {/* Badges de píldora idénticos a la referencia */}
+              <div className="flex flex-wrap items-center gap-2.5 pt-2">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs sm:text-sm font-medium text-slate-700 dark:text-neutral-300 shadow-2xs">
+                  <MapPin className="w-3.5 h-3.5 text-slate-500 dark:text-neutral-400" />
+                  <span>Medellín, Colombia</span>
+                </div>
+
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs sm:text-sm font-medium text-slate-700 dark:text-neutral-300 shadow-2xs">
+                  <GraduationCap className="w-3.5 h-3.5 text-slate-500 dark:text-neutral-400" />
+                  <span>Ingeniería de Software &bull; TdeA</span>
+                </div>
+
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs sm:text-sm font-medium text-slate-700 dark:text-neutral-300 shadow-2xs">
+                  <Globe className="w-3.5 h-3.5 text-slate-500 dark:text-neutral-400" />
+                  <span>Español nativo &bull; Inglés intermedio</span>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-slate-950 dark:text-white">
-                Cadencia &amp; Autonomía
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
-                Creo firmemente en el aprendizaje acelerado y el flujo continuo de entrega. Combino metodologías ágiles y prototipado rápido con disciplina para producir software limpio, mantenible y listo para producción.
-              </p>
             </div>
           </div>
         </section>
