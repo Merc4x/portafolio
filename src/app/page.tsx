@@ -389,139 +389,236 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FEATURED PROJECTS: SHOWCASE */}
-        <section id="proyectos" className="py-16 sm:py-20 border-b border-slate-200/80 dark:border-white/5">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-3">
-            <div className="space-y-2">
-              <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 uppercase tracking-wider font-bold">
-                Casos Reales
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
-                Software de ingeniería en producción.
+        {/* FEATURED PROJECTS: SHOWCASE INSPIRADO EN LA REFERENCIA */}
+        <section id="proyectos" className="py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            <div className="space-y-3">
+              <span className="text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
+                Proyectos destacados
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black text-slate-950 dark:text-white tracking-tight">
+                Software listo para explorar.
               </h2>
+              <p className="text-slate-600 dark:text-neutral-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+                Cada proyecto cuenta con una demo en producción o su repositorio público: puedes ingresar a probar la funcionalidad, examinar la arquitectura y explorar el código fuente.
+              </p>
             </div>
             <a
               href="https://github.com/Merc4x?tab=repositories"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-600 hover:text-slate-950 dark:text-neutral-400 dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-600 hover:text-slate-950 dark:text-neutral-400 dark:hover:text-white transition-colors shrink-0"
             >
-              <span>Repositorios en GitHub</span>
+              <span>Todos los repositorios en GitHub</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-10 sm:space-y-12">
             {/* Project 1: LiveCopilot */}
-            <div className="group rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-300 dark:hover:border-white/20 transition-all overflow-hidden flex flex-col shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:shadow-[0_12px_32px_-6px_rgba(15,23,42,0.12)]">
-              <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-neutral-900 border-b border-slate-200/80 dark:border-white/5">
-                <img
-                  src={`${basePath}/images/livecopilot.png`}
-                  alt="LiveCopilot Desktop App"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/95 dark:bg-[#08090c]/85 backdrop-blur-md border border-slate-200 dark:border-white/10 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-xs">
-                  Desktop AI Copilot
-                </div>
-              </div>
+            <div className="group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                {/* Columna Izquierda: Información, Features y Acciones */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="space-y-2">
+                    <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
+                      Desktop AI Copilot &bull; Audio &amp; VAD en Tiempo Real
+                    </span>
+                    <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                      LiveCopilot
+                    </h3>
+                  </div>
 
-              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
-                    LiveCopilot
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-neutral-300 mt-2 leading-relaxed">
-                    Copiloto de escritorio nativo para Windows con captura de loopback de audio WASAPI, detección por voz con Silero VAD y transcripción en tiempo real vía Groq Whisper, renderizado en un HUD flotante a 60 FPS con PyQt6.
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                    Copiloto de escritorio nativo de alto rendimiento para Windows. Diseñado para captura de audio del sistema sin latencia, detección inteligente de voz y transcripción instantánea en un HUD flotante a 60 FPS.
                   </p>
+
+                  {/* Bullet points con estilo idéntico a la referencia */}
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Captura nativa de audio de Windows mediante loopback WASAPI sin cables virtuales.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Detección de actividad de voz (VAD) en tiempo real con Silero para aislar voz de ruido.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Transcripción instantánea acelerada por Groq Whisper en interfaz transparente a 60 FPS con PyQt6.</span>
+                    </li>
+                  </ul>
+
+                  {/* Tech stack pills */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {["Python", "PyQt6", "Groq Whisper", "Silero VAD", "WASAPI", "Windows API"].map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <a
+                      href="https://github.com/Merc4x/LiveCopilot"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
+                    >
+                      <span>Ver en GitHub</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
+
+                    <a
+                      href="https://github.com/Merc4x/LiveCopilot"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                      <span>Código fuente</span>
+                    </a>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    Python
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    PyQt6
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    Groq Whisper
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    Silero VAD
-                  </span>
-                </div>
+                {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
+                <div className="lg:col-span-6 relative">
+                  <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                    {/* Traffic lights + URL Bar */}
+                    <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                      </div>
+                      <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                        github.com/Merc4x/LiveCopilot
+                      </div>
+                    </div>
 
-                <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
-                  <a
-                    href="https://github.com/Merc4x/LiveCopilot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-cyan-400 transition-colors"
-                  >
-                    <GithubIcon className="w-4 h-4" />
-                    <span>Ver Código en GitHub &rarr;</span>
-                  </a>
+                    {/* Screenshot Container */}
+                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                      <img
+                        src={`${basePath}/images/livecopilot.png`}
+                        alt="LiveCopilot Desktop HUD"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Floating depth badge */}
+                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                    <span>WASAPI &bull; 60 FPS HUD</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Project 2: Soluciones en Salud Laboral */}
-            <div className="group rounded-3xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-300 dark:hover:border-white/20 transition-all overflow-hidden flex flex-col shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:shadow-[0_12px_32px_-6px_rgba(15,23,42,0.12)]">
-              <div className="relative aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-neutral-900 border-b border-slate-200/80 dark:border-white/5">
-                <img
-                  src={`${basePath}/images/salud-laboral.png`}
-                  alt="Soluciones en Salud Laboral Platform"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/95 dark:bg-[#08090c]/85 backdrop-blur-md border border-slate-200 dark:border-white/10 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-xs">
-                  Web SaaS &bull; En Producción
-                </div>
-              </div>
+            <div className="group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                {/* Columna Izquierda: Información, Features y Acciones */}
+                <div className="lg:col-span-6 space-y-5">
+                  <div className="space-y-2">
+                    <span className="text-xs sm:text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">
+                      Plataforma Web SaaS &bull; SG-SST en Producción
+                    </span>
+                    <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                      Soluciones en Salud Laboral
+                    </h3>
+                  </div>
 
-              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-950 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                    Soluciones en Salud Laboral
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-neutral-300 mt-2 leading-relaxed">
-                    Plataforma web en producción para la gestión, divulgación y asesoría técnica en Seguridad y Salud en el Trabajo (SG-SST), capacitaciones y auditorías empresariales desplegada en la nube Render.
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                    Plataforma web en producción para la gestión, divulgación técnica y asesoría en Seguridad y Salud en el Trabajo (SG-SST), capacitaciones corporativas y gestión de auditorías empresariales.
                   </p>
+
+                  {/* Bullet points con estilo idéntico a la referencia */}
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Módulo centralizado para normatividad laboral colombiana, auditorías y gestión de riesgos.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Arquitectura backend modular en Python Flask con panel administrativo dinámico.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">✦</span>
+                      <span>Despliegue en la nube Render con alta disponibilidad y base de datos relacional.</span>
+                    </li>
+                  </ul>
+
+                  {/* Tech stack pills */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {["Python", "Flask", "Render Cloud", "HTML5 / CSS3", "JavaScript", "SG-SST"].map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 dark:bg-white/5 dark:text-emerald-400 border border-emerald-200/70 dark:border-white/10"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <a
+                      href="https://tutranquilidadlaboral.onrender.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
+                    >
+                      <span>Ver demo en vivo</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
+
+                    <a
+                      href="https://github.com/Merc4x/proyecto_salud_laboral"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                      <span>Código</span>
+                    </a>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    Python
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    Flask
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    Render Cloud
-                  </span>
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-800 dark:text-neutral-300">
-                    SG-SST
-                  </span>
-                </div>
+                {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
+                <div className="lg:col-span-6 relative">
+                  <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                    {/* Traffic lights + URL Bar */}
+                    <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                      </div>
+                      <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                        tutranquilidadlaboral.onrender.com
+                      </div>
+                    </div>
 
-                <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
-                  <a
-                    href="https://tutranquilidadlaboral.onrender.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    <span>Demo en Vivo</span>
-                  </a>
+                    {/* Screenshot Container */}
+                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                      <img
+                        src={`${basePath}/images/salud-laboral.png`}
+                        alt="Soluciones en Salud Laboral Web Platform"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
 
-                  <a
-                    href="https://github.com/Merc4x/proyecto_salud_laboral"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-slate-600 dark:text-neutral-400 hover:text-slate-950 dark:hover:text-white transition-colors"
-                  >
-                    <GithubIcon className="w-3.5 h-3.5" />
-                    <span>Código</span>
-                  </a>
+                  {/* Floating depth badge */}
+                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Render Cloud &bull; Producción</span>
+                  </div>
                 </div>
               </div>
             </div>
