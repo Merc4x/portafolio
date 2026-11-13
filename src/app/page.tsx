@@ -446,7 +446,7 @@ export default function Home() {
               Hola, soy Alejo.
             </h1>
             <p className="text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-600 dark:from-cyan-400 dark:via-blue-400 dark:to-indigo-300 bg-clip-text text-transparent leading-[1.2]">
-              Arquitectura de software con precisión, cadencia y flow.
+              Arquitectura de software con precisión y cadencia.
             </p>
           </div>
 
