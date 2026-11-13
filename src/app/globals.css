@@ -40,3 +40,103 @@
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* Smooth deliberate orbital and entrance animations */
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitSpinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes bootProgress {
+  0% {
+    width: 0%;
+  }
+  45% {
+    width: 58%;
+  }
+  80% {
+    width: 86%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes sectionSweep {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 1;
+  }
+  65% {
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: right;
+    opacity: 0;
+  }
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.animate-orbit-slow {
+  animation: orbitSpin 4.2s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbitSpinReverse 5.6s linear infinite;
+}
+
+.animate-boot-bar {
+  animation: bootProgress 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.8s ease-in-out infinite;
+}
+
+.animate-section-sweep {
+  animation: sectionSweep 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-card-enter {
+  animation: cardEnter 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

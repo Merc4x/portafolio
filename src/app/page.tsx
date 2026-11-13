@@ -2,22 +2,15 @@
 
 import { useState, useEffect } from "react";
 import {
-  Terminal,
-  ExternalLink,
   Code2,
   Cpu,
   Layers,
   Mail,
-  Phone,
   Check,
   Copy,
-  Sparkles,
-  User,
-  Briefcase,
   GraduationCap,
   MapPin,
   ArrowUpRight,
-  ShieldCheck,
   Globe,
   Menu,
   X,
@@ -27,6 +20,8 @@ import {
   Zap,
   Radio,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { usePortfolioStore, type SectionId } from "@/store/usePortfolioStore";
 
 // Base path helper for GitHub Pages repository deployment (/portafolio)
 const basePath = process.env.NODE_ENV === "production" ? "/portafolio" : "";
@@ -51,11 +46,72 @@ function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+function Merc4xCrest({ className = "w-7 h-7" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 40 40" fill="none">
+      <rect width="40" height="40" rx="11" className="fill-blue-600/15 dark:fill-blue-500/15" />
+      <path
+        d="M20 6L32 13V27L20 34L8 27V13L20 6Z"
+        className="stroke-blue-600 dark:stroke-cyan-400"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 25V15L20 20.5L26 15V25"
+        className="stroke-slate-950 dark:stroke-white"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="20" cy="11.5" r="1.8" className="fill-blue-600 dark:fill-cyan-400" />
+    </svg>
+  );
+}
+
+function DiamondBullet({ color = "blue" }: { color?: "blue" | "emerald" }) {
+  return (
+    <svg
+      className={cn(
+        "w-3.5 h-3.5 shrink-0 mt-1",
+        color === "emerald"
+          ? "text-emerald-600 dark:text-emerald-400"
+          : "text-blue-600 dark:text-cyan-400"
+      )}
+      viewBox="0 0 16 16"
+      fill="currentColor"
+    >
+      <path d="M8 1.5L14.5 8L8 14.5L1.5 8L8 1.5Z" />
+    </svg>
+  );
+}
+
 export default function Home() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const {
+    theme,
+    mobileMenuOpen,
+    isBooting,
+    activeSection,
+    isTransitioning,
+    projectFilter,
+    setTheme,
+    setMobileMenuOpen,
+    setIsBooting,
+    setActiveSection,
+    triggerSectionTransition,
+    setProjectFilter,
+  } = usePortfolioStore();
+
   const [copied, setCopied] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [filterChanging, setFilterChanging] = useState(false);
+
+  // Boot sequence loader
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsBooting(false);
+    }, 1150);
+    return () => clearTimeout(timer);
+  }, [setIsBooting]);
 
   // Initialize theme from localStorage or default to dark
   useEffect(() => {
@@ -71,20 +127,33 @@ export default function Home() {
       document.documentElement.classList.add("dark");
       setTheme("dark");
     }
-  }, []);
+  }, [setTheme]);
 
-  // Track scroll progress for the interactive top HUD bar
+  // Track scroll progress and active section for the interactive top HUD bar
   useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (totalScroll > 0) {
         setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / totalScroll) * 100)));
       }
+
+      const sections: SectionId[] = ["sobre-mi", "proyectos", "enfoque", "stack", "contacto"];
+      let current: SectionId = "inicio";
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 220) {
+            current = id;
+          }
+        }
+      }
+      setActiveSection(current);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [setActiveSection]);
 
   // IntersectionObserver for smooth scroll-reveal animations as the user navigates down
   useEffect(() => {
@@ -107,7 +176,7 @@ export default function Home() {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [projectFilter]);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
@@ -126,10 +195,56 @@ export default function Home() {
     setTimeout(() => setCopied(false), 2500);
   };
 
+  const handleNavClick = (section: SectionId) => {
+    triggerSectionTransition(section);
+  };
+
+  const handleFilterChange = (nextFilter: "all" | "fullstack" | "desktop") => {
+    if (nextFilter === projectFilter) return;
+    setFilterChanging(true);
+    setProjectFilter(nextFilter);
+    setTimeout(() => {
+      setFilterChanging(false);
+    }, 420);
+  };
+
   const closeMenu = () => setMobileMenuOpen(false);
+
+  const showFullstack = projectFilter === "all" || projectFilter === "fullstack";
+  const showDesktop = projectFilter === "all" || projectFilter === "desktop";
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 dark:bg-[#08090c] dark:text-[#e1e4ea] selection:bg-blue-600 selection:text-white transition-colors duration-300 relative overflow-x-hidden font-sans">
+      {/* ORBITAL BOOT LOADER OVERLAY */}
+      <div
+        className={cn(
+          "fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#08090c] text-white transition-all duration-700",
+          isBooting ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+      >
+        <div className="relative flex items-center justify-center w-28 h-28 mb-6">
+          <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping" />
+          <div className="absolute inset-1 rounded-full border-2 border-transparent border-t-blue-500 border-r-cyan-400 animate-orbit-slow" />
+          <div className="absolute inset-3.5 rounded-full border-2 border-transparent border-b-indigo-400 border-l-emerald-400 animate-orbit-reverse" />
+          <div className="relative flex items-center justify-center w-14 h-14 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl">
+            <Merc4xCrest className="w-9 h-9" />
+          </div>
+        </div>
+
+        <div className="text-center space-y-2">
+          <div className="font-mono text-xs tracking-[0.28em] uppercase text-cyan-400 font-semibold">
+            MERC4X.DEV &bull; SYSTEM READY
+          </div>
+          <p className="text-xs text-neutral-400 font-mono">
+            Inicializando arquitectura e interfaz interactiva...
+          </p>
+        </div>
+
+        <div className="w-56 h-1.5 rounded-full bg-white/10 overflow-hidden mt-5">
+          <div className="h-full rounded-full bg-gradient-to-r from-blue-600 via-cyan-400 to-emerald-400 animate-boot-bar" />
+        </div>
+      </div>
+
       {/* High-fidelity ambient background glows */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-b from-blue-400/20 via-indigo-300/10 to-transparent dark:from-cyan-500/10 dark:via-indigo-500/5 dark:to-transparent blur-3xl opacity-80" />
@@ -145,10 +260,19 @@ export default function Home() {
           style={{ width: `${scrollProgress}%` }}
         />
 
+        {/* Sweep de transición al cambiar de sección */}
+        {isTransitioning && (
+          <div className="absolute top-0 inset-x-0 h-[2.5px] bg-gradient-to-r from-cyan-400 via-blue-500 to-emerald-400 animate-section-sweep z-20" />
+        )}
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-          {/* Brand with blue beacon */}
-          <a href="#" className="flex items-center gap-2.5 group shrink-0">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-blue-500 group-hover:scale-125 transition-transform shadow-xs" />
+          {/* Brand with vector crest */}
+          <a
+            href="#"
+            onClick={() => handleNavClick("inicio")}
+            className="flex items-center gap-2.5 group shrink-0"
+          >
+            <Merc4xCrest className="w-7 h-7 group-hover:scale-110 transition-transform duration-300" />
             <span className="font-mono text-sm tracking-wider font-bold text-slate-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">
               MERC4X<span className="text-blue-600 dark:text-blue-500">.DEV</span>
             </span>
@@ -156,36 +280,29 @@ export default function Home() {
 
           {/* Desktop Nav Links: HUD Central Isla Bien Organizada */}
           <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 text-xs font-medium text-slate-600 dark:text-neutral-300 shadow-2xs">
-            <a
-              href="#sobre-mi"
-              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
-            >
-              Sobre mí
-            </a>
-            <a
-              href="#proyectos"
-              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
-            >
-              Proyectos
-            </a>
-            <a
-              href="#enfoque"
-              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
-            >
-              Enfoque
-            </a>
-            <a
-              href="#stack"
-              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
-            >
-              Tecnologías
-            </a>
-            <a
-              href="#contacto"
-              className="px-3.5 py-1.5 rounded-full hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white hover:shadow-2xs transition-all"
-            >
-              Contacto
-            </a>
+            {(
+              [
+                { id: "sobre-mi", label: "Sobre mí" },
+                { id: "proyectos", label: "Proyectos" },
+                { id: "enfoque", label: "Enfoque" },
+                { id: "stack", label: "Tecnologías" },
+                { id: "contacto", label: "Contacto" },
+              ] as { id: SectionId; label: string }[]
+            ).map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => handleNavClick(item.id)}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-full transition-all duration-300",
+                  activeSection === item.id
+                    ? "bg-blue-600 text-white shadow-xs"
+                    : "hover:bg-white dark:hover:bg-white/10 hover:text-slate-950 dark:hover:text-white"
+                )}
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
 
           {/* Header Action Buttons */}
@@ -238,35 +355,35 @@ export default function Home() {
             <nav className="flex flex-col space-y-2 font-medium text-base text-slate-800 dark:text-neutral-200">
               <a
                 href="#sobre-mi"
-                onClick={closeMenu}
+                onClick={() => handleNavClick("sobre-mi")}
                 className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 Sobre mí
               </a>
               <a
                 href="#proyectos"
-                onClick={closeMenu}
+                onClick={() => handleNavClick("proyectos")}
                 className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 Proyectos de Ingeniería
               </a>
               <a
                 href="#enfoque"
-                onClick={closeMenu}
+                onClick={() => handleNavClick("enfoque")}
                 className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 Enfoque &amp; Metodología
               </a>
               <a
                 href="#stack"
-                onClick={closeMenu}
+                onClick={() => handleNavClick("stack")}
                 className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 Arsenal Tecnológico
               </a>
               <a
                 href="#contacto"
-                onClick={closeMenu}
+                onClick={() => handleNavClick("contacto")}
                 className="py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 Contacto
@@ -296,7 +413,7 @@ export default function Home() {
           {/* 1. TU FOTO DE PERFIL ES LO PRIMERO QUE SE VE */}
           <div className="flex flex-col items-center justify-center pt-2 sm:pt-4">
             <div className="relative group">
-              {/* Glowing aura frame (soft sky/blue in light mode, cyan/indigo in dark mode) */}
+              {/* Glowing aura frame */}
               <div className="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-blue-500/25 via-indigo-500/20 to-sky-400/25 dark:from-blue-600/30 dark:via-indigo-600/25 dark:to-cyan-500/30 blur-xl opacity-75 group-hover:opacity-100 transition-opacity" />
 
               {/* Main Photo Container with crisp shadow */}
@@ -335,13 +452,14 @@ export default function Home() {
 
           {/* 4. BIO SUCINTA */}
           <p className="text-base sm:text-lg text-slate-600 dark:text-neutral-300 leading-relaxed max-w-2xl mx-auto">
-            Desarrollador Full Stack enfocado en la construcción de herramientas de escritorio con IA de audio, microservicios y plataformas web de alto rendimiento con <strong className="text-slate-900 dark:text-white font-semibold">Python, Next.js, Flask</strong> y <strong className="text-slate-900 dark:text-white font-semibold">Spring Boot</strong>.
+            Desarrollador Full Stack enfocado en la construcción de herramientas de escritorio con IA de audio, microservicios y plataformas web de alto rendimiento con <strong className="text-slate-900 dark:text-white font-semibold">React, TypeScript, Next.js, Node.js, Python</strong> y <strong className="text-slate-900 dark:text-white font-semibold">Spring Boot</strong>.
           </p>
 
           {/* 5. BOTONES DE ACCIÓN RÁPIDA */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 max-w-md mx-auto sm:max-w-none">
             <a
               href="#proyectos"
+              onClick={() => handleNavClick("proyectos")}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/25 active:scale-95 text-center"
             >
               <span>Explorar mis proyectos</span>
@@ -379,7 +497,7 @@ export default function Home() {
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05)] space-y-1 text-center sm:text-left hover:border-blue-300 dark:hover:border-white/20 transition-all">
               <div className="text-xs font-mono text-blue-700 dark:text-cyan-400 font-semibold">Arquitectura</div>
               <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono">Full Stack</div>
-              <div className="text-xs text-slate-500 dark:text-neutral-400">Python + Next.js + Spring</div>
+              <div className="text-xs text-slate-500 dark:text-neutral-400">React + TypeScript + Node</div>
             </div>
 
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05)] space-y-1 text-center sm:text-left hover:border-blue-300 dark:hover:border-white/20 transition-all">
@@ -435,7 +553,7 @@ export default function Home() {
 
         {/* FEATURED PROJECTS: SHOWCASE INSPIRADO EN LA REFERENCIA */}
         <section id="proyectos" className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out py-16 sm:py-24 border-b border-slate-200/80 dark:border-white/5">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
             <div className="space-y-3">
               <span className="text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
                 Proyectos destacados
@@ -458,318 +576,464 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="space-y-10 sm:space-y-12">
+          {/* Interactive Filter Tabs powered by Zustand */}
+          <div className="flex flex-wrap items-center gap-2 mb-10">
+            {(
+              [
+                { id: "all", label: "Todos los proyectos (4)" },
+                { id: "fullstack", label: "Full Stack & Web (3)" },
+                { id: "desktop", label: "Desktop & IA (1)" },
+              ] as const
+            ).map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleFilterChange(tab.id)}
+                className={cn(
+                  "px-4 py-2 rounded-full text-xs font-mono font-semibold transition-all duration-300 border",
+                  projectFilter === tab.id
+                    ? "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/20"
+                    : "bg-white dark:bg-[#0f1117] text-slate-600 dark:text-neutral-300 border-slate-200 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/25"
+                )}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div
+            className={cn(
+              "space-y-10 sm:space-y-12 transition-all duration-500",
+              filterChanging ? "opacity-40 translate-y-2 scale-[0.995]" : "opacity-100 translate-y-0 scale-100"
+            )}
+          >
             {/* Project 1: WMS */}
-            <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                {/* Columna Izquierda: Información, Features y Acciones */}
-                <div className="lg:col-span-6 space-y-5">
-                  <div className="space-y-2">
-                    <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
-                      SaaS de Monitoreo de Flotas &bull; Tiempo Real
-                    </span>
-                    <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
-                      WMS
-                    </h3>
-                  </div>
-
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
-                    Plataforma multi-empresa para ver en tiempo real los vehículos de una pyme sobre el mapa de Medellín, con simulación GPS, geocercas inteligentes, alertas automáticas y reportes detallados.
-                  </p>
-
-                  {/* Bullet points con estilo idéntico a la referencia */}
-                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Mapa interactivo en vivo con simulador GPS sobre rutas reales de Medellín e historial.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Geocercas dibujadas a mano alzada y alertas automáticas de robo, desvío y exceso de parada.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Arquitectura frontend en Angular con Leaflet y base de datos SQLite con APIs optimizadas.</span>
-                    </li>
-                  </ul>
-
-                  {/* Tech stack pills */}
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {["Angular", "Node.js", "SQLite", "Leaflet", "Azure Functions", "TypeScript"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
-                      >
-                        {tech}
+            {showFullstack && (
+              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                  {/* Columna Izquierda: Información, Features y Acciones */}
+                  <div className="lg:col-span-6 space-y-5">
+                    <div className="space-y-2">
+                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
+                        SaaS de Monitoreo de Flotas &bull; Tiempo Real
                       </span>
-                    ))}
+                      <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                        WMS
+                      </h3>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                      Plataforma multi-empresa para ver en tiempo real los vehículos de una pyme sobre el mapa de Medellín, con simulación GPS, geocercas inteligentes, alertas automáticas y reportes detallados.
+                    </p>
+
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="blue" />
+                        <span>Mapa interactivo en vivo con simulador GPS sobre rutas reales de Medellín e historial.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="blue" />
+                        <span>Geocercas dibujadas a mano alzada y alertas automáticas de robo, desvío y exceso de parada.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="blue" />
+                        <span>Arquitectura frontend en Angular con Leaflet y base de datos SQLite con APIs optimizadas.</span>
+                      </li>
+                    </ul>
+
+                    {/* Tech stack pills */}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {["Angular", "Node.js", "SQLite", "Leaflet", "Azure Functions", "TypeScript"].map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-wrap items-center gap-3 pt-2">
+                      <a
+                        href="https://merc4x.github.io/WMS/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
+                      >
+                        <span>Ver demo en vivo</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+
+                      <a
+                        href="https://github.com/Merc4x/WMS"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                        <span>Código</span>
+                      </a>
+                    </div>
                   </div>
 
-                  {/* Action buttons */}
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <a
-                      href="https://merc4x.github.io/WMS/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
-                    >
-                      <span>Ver demo en vivo</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-
-                    <a
-                      href="https://github.com/Merc4x/WMS"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
-                    >
-                      <GithubIcon className="w-4 h-4" />
-                      <span>Código</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
-                <div className="lg:col-span-6 relative">
-                  <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
-                    {/* Traffic lights + URL Bar */}
-                    <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
+                  <div className="lg:col-span-6 relative">
+                    <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                      {/* Traffic lights + URL Bar */}
+                      <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                        </div>
+                        <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                          merc4x.github.io/WMS
+                        </div>
                       </div>
-                      <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
-                        merc4x.github.io/WMS
+
+                      {/* Screenshot Container */}
+                      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                        <img
+                          src={`${basePath}/images/wms-preview.png`}
+                          alt="WMS Plataforma de Monitoreo de Flotas"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
                     </div>
 
-                    {/* Screenshot Container */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
-                      <img
-                        src={`${basePath}/images/wms-preview.png`}
-                        alt="WMS Plataforma de Monitoreo de Flotas"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                    {/* Floating depth badge */}
+                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                      <span>SaaS &bull; GPS en Vivo</span>
                     </div>
-                  </div>
-
-                  {/* Floating depth badge */}
-                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                    <span>SaaS &bull; GPS en Vivo</span>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Project 2: LiveCopilot (Layout Alternado: Mockup a la izquierda, Texto a la derecha) */}
-            <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                {/* Columna Texto: En mobile va primero, en desktop pasa a la derecha (order-2) */}
-                <div className="lg:col-span-6 space-y-5 lg:order-2">
-                  <div className="space-y-2">
-                    <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
-                      Desktop AI Copilot &bull; Audio &amp; VAD en Tiempo Real
-                    </span>
-                    <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
-                      LiveCopilot
-                    </h3>
-                  </div>
-
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
-                    Copiloto de escritorio nativo de alto rendimiento para Windows. Diseñado para captura de audio del sistema sin latencia, detección inteligente de voz y transcripción instantánea en un HUD flotante a 60 FPS.
-                  </p>
-
-                  {/* Bullet points con estilo idéntico a la referencia */}
-                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Captura nativa de audio de Windows mediante loopback WASAPI sin cables virtuales.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Detección de actividad de voz (VAD) en tiempo real con Silero para aislar voz de ruido.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-blue-600 dark:text-cyan-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Transcripción instantánea acelerada por Groq Whisper en interfaz transparente a 60 FPS con PyQt6.</span>
-                    </li>
-                  </ul>
-
-                  {/* Tech stack pills */}
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {["Python", "PyQt6", "Groq Whisper", "Silero VAD", "WASAPI", "Windows API"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
-                      >
-                        {tech}
+            {showDesktop && (
+              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                  {/* Columna Texto: En mobile va primero, en desktop pasa a la derecha (order-2) */}
+                  <div className="lg:col-span-6 space-y-5 lg:order-2">
+                    <div className="space-y-2">
+                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
+                        Desktop AI Copilot &bull; Audio &amp; VAD en Tiempo Real
                       </span>
-                    ))}
+                      <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                        LiveCopilot
+                      </h3>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                      Copiloto de escritorio nativo de alto rendimiento para Windows. Diseñado para captura de audio del sistema sin latencia, detección inteligente de voz y transcripción instantánea en un HUD flotante a 60 FPS.
+                    </p>
+
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="blue" />
+                        <span>Captura nativa de audio de Windows mediante loopback WASAPI sin cables virtuales.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="blue" />
+                        <span>Detección de actividad de voz (VAD) en tiempo real con Silero para aislar voz de ruido.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="blue" />
+                        <span>Transcripción instantánea acelerada por Groq Whisper en interfaz transparente a 60 FPS con PyQt6.</span>
+                      </li>
+                    </ul>
+
+                    {/* Tech stack pills */}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {["Python", "PyQt6", "Groq Whisper", "Silero VAD", "WASAPI", "Windows API"].map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-wrap items-center gap-3 pt-2">
+                      <a
+                        href="https://github.com/Merc4x/LiveCopilot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
+                      >
+                        <span>Ver en GitHub</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+
+                      <a
+                        href="https://github.com/Merc4x/LiveCopilot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                        <span>Código fuente</span>
+                      </a>
+                    </div>
                   </div>
 
-                  {/* Action buttons */}
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <a
-                      href="https://github.com/Merc4x/LiveCopilot"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
-                    >
-                      <span>Ver en GitHub</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-
-                    <a
-                      href="https://github.com/Merc4x/LiveCopilot"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
-                    >
-                      <GithubIcon className="w-4 h-4" />
-                      <span>Código fuente</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Columna Mockup: En mobile va segundo, en desktop pasa a la izquierda (order-1) */}
-                <div className="lg:col-span-6 relative lg:order-1">
-                  <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
-                    {/* Traffic lights + URL Bar */}
-                    <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  {/* Columna Mockup: En mobile va segundo, en desktop pasa a la izquierda (order-1) */}
+                  <div className="lg:col-span-6 relative lg:order-1">
+                    <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                      {/* Traffic lights + URL Bar */}
+                      <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                        </div>
+                        <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                          github.com/Merc4x/LiveCopilot
+                        </div>
                       </div>
-                      <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
-                        github.com/Merc4x/LiveCopilot
+
+                      {/* Screenshot Container */}
+                      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                        <img
+                          src={`${basePath}/images/livecopilot.png`}
+                          alt="LiveCopilot Desktop HUD"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
                     </div>
 
-                    {/* Screenshot Container */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
-                      <img
-                        src={`${basePath}/images/livecopilot.png`}
-                        alt="LiveCopilot Desktop HUD"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                    {/* Floating depth badge */}
+                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                      <span>WASAPI &bull; 60 FPS HUD</span>
                     </div>
-                  </div>
-
-                  {/* Floating depth badge */}
-                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                    <span>WASAPI &bull; 60 FPS HUD</span>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Project 3: Soluciones en Salud Laboral */}
-            <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 transition-all p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                {/* Columna Izquierda: Información, Features y Acciones */}
-                <div className="lg:col-span-6 space-y-5">
-                  <div className="space-y-2">
-                    <span className="text-xs sm:text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">
-                      Plataforma Web SaaS &bull; SG-SST en Producción
-                    </span>
-                    <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
-                      Soluciones en Salud Laboral
-                    </h3>
-                  </div>
-
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
-                    Plataforma web en producción para la gestión, divulgación técnica y asesoría en Seguridad y Salud en el Trabajo (SG-SST), capacitaciones corporativas y gestión de auditorías empresariales.
-                  </p>
-
-                  {/* Bullet points con estilo idéntico a la referencia */}
-                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Módulo centralizado para normatividad laboral colombiana, auditorías y gestión de riesgos.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Arquitectura backend modular en Python Flask con panel administrativo dinámico.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">✦</span>
-                      <span>Despliegue en la nube Render con alta disponibilidad y base de datos relacional.</span>
-                    </li>
-                  </ul>
-
-                  {/* Tech stack pills */}
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {["Python", "Flask", "Render Cloud", "HTML5 / CSS3", "JavaScript", "SG-SST"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 dark:bg-white/5 dark:text-emerald-400 border border-emerald-200/70 dark:border-white/10"
-                      >
-                        {tech}
+            {showFullstack && (
+              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                  {/* Columna Izquierda: Información, Features y Acciones */}
+                  <div className="lg:col-span-6 space-y-5">
+                    <div className="space-y-2">
+                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">
+                        Plataforma Web SaaS &bull; SG-SST en Producción
                       </span>
-                    ))}
+                      <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                        Soluciones en Salud Laboral
+                      </h3>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                      Plataforma web en producción para la gestión, divulgación técnica y asesoría en Seguridad y Salud en el Trabajo (SG-SST), capacitaciones corporativas y gestión de auditorías empresariales.
+                    </p>
+
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="emerald" />
+                        <span>Módulo centralizado para normatividad laboral colombiana, auditorías y gestión de riesgos.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="emerald" />
+                        <span>Arquitectura backend modular en Python Flask con panel administrativo dinámico.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="emerald" />
+                        <span>Despliegue en la nube Render con alta disponibilidad y base de datos relacional.</span>
+                      </li>
+                    </ul>
+
+                    {/* Tech stack pills */}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {["Python", "Flask", "Render Cloud", "HTML5 / CSS3", "JavaScript", "SG-SST"].map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 dark:bg-white/5 dark:text-emerald-400 border border-emerald-200/70 dark:border-white/10"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-wrap items-center gap-3 pt-2">
+                      <a
+                        href="https://tutranquilidadlaboral.onrender.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
+                      >
+                        <span>Ver demo en vivo</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+
+                      <a
+                        href="https://github.com/Merc4x/proyecto_salud_laboral"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                        <span>Código</span>
+                      </a>
+                    </div>
                   </div>
 
-                  {/* Action buttons */}
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <a
-                      href="https://tutranquilidadlaboral.onrender.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
-                    >
-                      <span>Ver demo en vivo</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-
-                    <a
-                      href="https://github.com/Merc4x/proyecto_salud_laboral"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
-                    >
-                      <GithubIcon className="w-4 h-4" />
-                      <span>Código</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
-                <div className="lg:col-span-6 relative">
-                  <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
-                    {/* Traffic lights + URL Bar */}
-                    <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  {/* Columna Derecha: Mockup estilo ventana de navegador con detalle flotante */}
+                  <div className="lg:col-span-6 relative">
+                    <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                      {/* Traffic lights + URL Bar */}
+                      <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                        </div>
+                        <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                          tutranquilidadlaboral.onrender.com
+                        </div>
                       </div>
-                      <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
-                        tutranquilidadlaboral.onrender.com
+
+                      {/* Screenshot Container */}
+                      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                        <img
+                          src={`${basePath}/images/salud-laboral.png`}
+                          alt="Soluciones en Salud Laboral Web Platform"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
                     </div>
 
-                    {/* Screenshot Container */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
-                      <img
-                        src={`${basePath}/images/salud-laboral.png`}
-                        alt="Soluciones en Salud Laboral Web Platform"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                    {/* Floating depth badge */}
+                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Render Cloud &bull; Producción</span>
                     </div>
-                  </div>
-
-                  {/* Floating depth badge */}
-                  <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Render Cloud &bull; Producción</span>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Project 4: Bienestar Estudiantil — Root (Layout Alternado: Mockup a la izquierda, Texto a la derecha) */}
+            {showFullstack && (
+              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                  {/* Columna Texto: En mobile va primero, en desktop pasa a la derecha (order-2) */}
+                  <div className="lg:col-span-6 space-y-5 lg:order-2">
+                    <div className="space-y-2">
+                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">
+                        Plataforma Universitaria Full Stack &bull; TdeA
+                      </span>
+                      <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
+                        Bienestar Estudiantil — Root
+                      </h3>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-neutral-300 leading-relaxed">
+                      Sistema integral para el Tecnológico de Antioquia (TdeA) con agendamiento de citas médicas y psicológicas, control automático de cupos en actividades, historial clínico confidencial y auditoría por roles.
+                    </p>
+
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="emerald" />
+                        <span>Validación automática de disponibilidad de agenda para evitar cruces de horarios e inscripciones duplicadas.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="emerald" />
+                        <span>Control de acceso basado en roles (Estudiante, Profesional y Coordinador) con bitácora de auditoría en vivo.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <DiamondBullet color="emerald" />
+                        <span>Arquitectura en TypeScript con TanStack Query, Zustand, React Hook Form y API REST en Node.js + Express.</span>
+                      </li>
+                    </ul>
+
+                    {/* Tech stack pills */}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {[
+                        "React",
+                        "TypeScript",
+                        "Tailwind CSS",
+                        "Node.js",
+                        "TanStack Query",
+                        "Zustand",
+                        "React Hook Form",
+                        "shadcn/ui",
+                      ].map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 dark:bg-white/5 dark:text-emerald-400 border border-emerald-200/70 dark:border-white/10"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-wrap items-center gap-3 pt-2">
+                      <a
+                        href="https://merc4x.github.io/bienestar-estudiantil-root/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/25 active:scale-95"
+                      >
+                        <span>Ver demo en vivo</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+
+                      <a
+                        href="https://github.com/Merc4x/bienestar-estudiantil-root"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-neutral-200 font-medium text-xs sm:text-sm transition-all border border-slate-200 dark:border-white/10 active:scale-95"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                        <span>Código</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Columna Mockup: En mobile va segundo, en desktop pasa a la izquierda (order-1) */}
+                  <div className="lg:col-span-6 relative lg:order-1">
+                    <div className="rounded-2xl border border-slate-200/90 dark:border-white/15 bg-slate-100 dark:bg-[#141824] shadow-xl overflow-hidden group-hover:shadow-2xl transition-all">
+                      {/* Traffic lights + URL Bar */}
+                      <div className="h-9 px-3.5 bg-slate-200/80 dark:bg-[#10131d] border-b border-slate-200/90 dark:border-white/10 flex items-center gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                        </div>
+                        <div className="flex-1 max-w-xs mx-auto text-center px-3 py-0.5 rounded-md bg-white dark:bg-white/5 text-[11px] font-mono text-slate-600 dark:text-neutral-400 truncate border border-slate-200/60 dark:border-white/5">
+                          merc4x.github.io/bienestar-estudiantil-root
+                        </div>
+                      </div>
+
+                      {/* Screenshot Container */}
+                      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                        <img
+                          src={`${basePath}/images/bienestar-root.png`}
+                          alt="Bienestar Estudiantil Root TdeA"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Floating depth badge */}
+                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>TdeA &bull; Full Stack TS</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -848,7 +1112,17 @@ export default function Home() {
                 <span>Frontend</span>
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
-                {["React 19", "Next.js 16", "TypeScript", "Tailwind CSS", "JavaScript", "HTML5 / CSS3"].map((t) => (
+                {[
+                  "React 19",
+                  "Next.js 16",
+                  "Angular",
+                  "TypeScript",
+                  "Tailwind CSS",
+                  "shadcn/ui",
+                  "TanStack Query",
+                  "Zustand",
+                  "React Hook Form",
+                ].map((t) => (
                   <span
                     key={t}
                     className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 border border-slate-200/80 dark:border-transparent transition-colors"
@@ -866,7 +1140,7 @@ export default function Home() {
                 <span>Backend</span>
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
-                {["Python", "Flask", "FastAPI", "Java", "Spring Boot", "Node.js", "REST APIs"].map((t) => (
+                {["Node.js", "Express", "Python", "Flask", "FastAPI", "Java", "Spring Boot", "REST APIs"].map((t) => (
                   <span
                     key={t}
                     className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 border border-slate-200/80 dark:border-transparent transition-colors"
@@ -884,7 +1158,7 @@ export default function Home() {
                 <span>Bases de Datos</span>
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
-                {["PostgreSQL", "MongoDB", "SQLite", "SQL Relacional"].map((t) => (
+                {["PostgreSQL", "SQLite", "MongoDB", "SQL Relacional"].map((t) => (
                   <span
                     key={t}
                     className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-300 border border-slate-200/80 dark:border-transparent transition-colors"
