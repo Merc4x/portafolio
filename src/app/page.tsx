@@ -818,12 +818,12 @@ export default function Home() {
 
             {/* Project 3: Soluciones en Salud Laboral */}
             {showFullstack && (
-              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                   {/* Columna Izquierda: Información, Features y Acciones */}
                   <div className="lg:col-span-6 space-y-5">
                     <div className="space-y-2">
-                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
                         Plataforma Web SaaS &bull; SG-SST en Producción
                       </span>
                       <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -837,15 +837,15 @@ export default function Home() {
 
                     <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
                       <li className="flex items-start gap-2.5">
-                        <DiamondBullet color="emerald" />
+                        <DiamondBullet color="blue" />
                         <span>Módulo centralizado para normatividad laboral colombiana, auditorías y gestión de riesgos.</span>
                       </li>
                       <li className="flex items-start gap-2.5">
-                        <DiamondBullet color="emerald" />
+                        <DiamondBullet color="blue" />
                         <span>Arquitectura backend modular en Python Flask con panel administrativo dinámico.</span>
                       </li>
                       <li className="flex items-start gap-2.5">
-                        <DiamondBullet color="emerald" />
+                        <DiamondBullet color="blue" />
                         <span>Despliegue en la nube Render con alta disponibilidad y base de datos relacional.</span>
                       </li>
                     </ul>
@@ -855,7 +855,7 @@ export default function Home() {
                       {["Python", "Flask", "Render Cloud", "HTML5 / CSS3", "JavaScript", "SG-SST"].map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 dark:bg-white/5 dark:text-emerald-400 border border-emerald-200/70 dark:border-white/10"
+                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
                         >
                           {tech}
                         </span>
@@ -912,8 +912,8 @@ export default function Home() {
                     </div>
 
                     {/* Floating depth badge */}
-                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-lg">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                       <span>Render Cloud &bull; Producción</span>
                     </div>
                   </div>
@@ -923,12 +923,12 @@ export default function Home() {
 
             {/* Project 4: Bienestar Estudiantil — Root (Layout Alternado: Mockup a la izquierda, Texto a la derecha) */}
             {showFullstack && (
-              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-emerald-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
+              <div className="reveal-on-scroll opacity-0 translate-y-8 transition-all duration-700 ease-out group rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#0f1117] border border-slate-200/90 dark:border-white/10 hover:border-blue-400 dark:hover:border-white/20 p-6 sm:p-10 shadow-lg shadow-slate-200/40 dark:shadow-none">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                   {/* Columna Texto: En mobile va primero, en desktop pasa a la derecha (order-2) */}
                   <div className="lg:col-span-6 space-y-5 lg:order-2">
                     <div className="space-y-2">
-                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs sm:text-sm font-semibold tracking-wide text-blue-600 dark:text-cyan-400">
                         Plataforma Universitaria Full Stack &bull; TdeA
                       </span>
                       <h3 className="text-2xl sm:text-4xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -942,15 +942,15 @@ export default function Home() {
 
                     <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-neutral-300">
                       <li className="flex items-start gap-2.5">
-                        <DiamondBullet color="emerald" />
+                        <DiamondBullet color="blue" />
                         <span>Validación automática de disponibilidad de agenda para evitar cruces de horarios e inscripciones duplicadas.</span>
                       </li>
                       <li className="flex items-start gap-2.5">
-                        <DiamondBullet color="emerald" />
+                        <DiamondBullet color="blue" />
                         <span>Control de acceso basado en roles (Estudiante, Profesional y Coordinador) con bitácora de auditoría en vivo.</span>
                       </li>
                       <li className="flex items-start gap-2.5">
-                        <DiamondBullet color="emerald" />
+                        <DiamondBullet color="blue" />
                         <span>Arquitectura en TypeScript con TanStack Query, Zustand, React Hook Form y API REST en Node.js + Express.</span>
                       </li>
                     </ul>
@@ -969,7 +969,7 @@ export default function Home() {
                       ].map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 dark:bg-white/5 dark:text-emerald-400 border border-emerald-200/70 dark:border-white/10"
+                          className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 dark:bg-white/5 dark:text-cyan-400 border border-blue-200/70 dark:border-white/10"
                         >
                           {tech}
                         </span>
@@ -982,7 +982,7 @@ export default function Home() {
                         href="https://merc4x.github.io/bienestar-estudiantil-root/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/25 active:scale-95"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm transition-all shadow-md shadow-blue-600/25 active:scale-95"
                       >
                         <span>Ver demo en vivo</span>
                         <ArrowUpRight className="w-4 h-4" />
@@ -1026,8 +1026,8 @@ export default function Home() {
                     </div>
 
                     {/* Floating depth badge */}
-                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-400 shadow-lg">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <div className="hidden sm:inline-flex items-center gap-2 absolute -bottom-3 -left-3 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0c0e14] border border-slate-200 dark:border-white/15 text-xs font-mono font-semibold text-blue-700 dark:text-cyan-400 shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                       <span>TdeA &bull; Full Stack TS</span>
                     </div>
                   </div>
@@ -1071,7 +1071,7 @@ export default function Home() {
                 <Zap className="w-5 h-5" />
               </div>
               <h3 className="text-lg font-bold text-slate-950 dark:text-white">
-                Vibe Coding &amp; Flow
+                Vibe Coding
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 leading-relaxed">
                 Adopción de herramientas de inteligencia artificial y aceleración iterativa para pasar de la concepción al prototipo funcional en horas, sin comprometer la limpieza del código.
